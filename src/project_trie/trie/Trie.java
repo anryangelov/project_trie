@@ -2,49 +2,52 @@ package project_trie.trie;
 
 import java.io.Serializable;
 
+public class Trie implements Serializable {
 
-
-public class Trie implements Serializable{
-	
 	public Node top;
 	private String stringResult;
-	
+
 	public Trie() {
 		top = new Node();
 	}
-	
+
 	public String toString() {
 		stringResult = "";
 		traverseRecursivly(top);
 		return stringResult;
 	}
-	
+
 	private void traverseRecursivly(Node node) {
 		String letter;
-		if (node.value != null) stringResult += "--> " + "( " + node.value + " ) ";
+		if (node.value != null)
+			stringResult += "--> " + "( " + node.value + " ) ";
 		for (int i = 0; i < node.path.length; i++) {
-			if (node.path[i] != null ) {
-				 letter = Character.toString((char) (i + 97));
-				 stringResult += letter + " ";
-				 //if (node.path[i].value != null) res += "--> " + node.path[i].value + "\n" + res.replace("[a-z]", " ");
-				 traverseRecursivly(node.path[i]);
+			if (node.path[i] != null) {
+				letter = Character.toString((char) (i + 97));
+				stringResult += letter + " ";
+				// if (node.path[i].value != null) res += "--> " +
+				// node.path[i].value + "\n" + res.replace("[a-z]", " ");
+				traverseRecursivly(node.path[i]);
 			}
 		}
 	}
-	
+
 	public void add(String key, String value) {
 		addRecursivly(key, value, top);
 	}
-	
+
 	private void addRecursivly(String key, String value, Node node) {
-		if (key.length() == 0) { 
+
+
+		if (key.length() == 0) {
 			node.value = value;
 			return;
 		}
+		int position = Character.isUpperCase(key.charAt(0)) ? 'A': 'a';
 		Node nextNode;
-		int ascii_int = key.charAt(0) - 97;
+		int ascii_int = key.charAt(0) - position;
 		key = key.substring(1, key.length());
-		if (node.path[ascii_int] == null ) {
+		if (node.path[ascii_int] == null) {
 			nextNode = new Node();
 			node.path[ascii_int] = nextNode;
 		} else {
@@ -52,23 +55,27 @@ public class Trie implements Serializable{
 		}
 		addRecursivly(key, value, nextNode);
 	}
-	
+
 	public String get(String key) {
 		Node node = getRrecursivly(key, top);
-		if (node!= null) return node.value;
+		if (node != null)
+			return node.value;
 		return null;
 	}
-	
+
 	private Node getRrecursivly(String key, Node node) {
-		if (key.length() == 0) return node;
-		int ascii_int = key.charAt(0) - 97;
+		if (key.length() == 0){
+			return node;
+		}
+		int position = Character.isUpperCase(key.charAt(0)) ? 'A' : 'a';
+		int ascii_int = key.charAt(0) - position;
 		key = key.substring(1, key.length());
 		if (node.path[ascii_int] != null) {
 			return getRrecursivly(key, node.path[ascii_int]);
 		}
 		return null;
 	}
-	
+
 	public boolean delete(String key) {
 		Node node = getRrecursivly(key, top);
 		if (node != null) {

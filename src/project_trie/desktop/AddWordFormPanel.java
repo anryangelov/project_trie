@@ -1,20 +1,14 @@
 package project_trie.desktop;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class AddWordFormPanel extends JPanel {
 
 	private JTextArea description = new JTextArea();
 	private JButton submit = new JButton("submit");
-	private JTextField word = new JTextField();
+	private JTextArea word = new JTextArea();
 
 	public AddWordFormPanel() {
 		createForm();
@@ -23,8 +17,8 @@ public class AddWordFormPanel extends JPanel {
 	public void createForm() {
 		setLayout(null);
 		// setBackground(Color.BLUE);
-		word.setBounds(10, 20, 200, 32);
-		add(word);
+		getWord().setBounds(10, 20, 200, 32);
+		add(getWord());
 		getDescription().setBounds(10, 55, 800, 300);
 		add(getDescription());
 		getSubmit().setBounds(720, 370, 90, 30);
@@ -42,5 +36,13 @@ public class AddWordFormPanel extends JPanel {
 
 	public void setDescription(JTextArea description) {
 		this.description = description;
+	}
+
+	public JTextArea getWord() {
+		return word;
+	}
+
+	public void setWord(String word) {
+		this.word.setText(word);
 	}
 }

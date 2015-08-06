@@ -27,6 +27,8 @@ public class MainPanel extends JPanel {
 							"Please enter a word in the text area");
 					return;
 				}
+				descriptionForm.getWord().setText(navigationPanel.getSearchArea().getText());;
+				descriptionForm.getDescription().setText("Enter description here");
 				descriptionForm.setBounds(0, 70, 950, 500);
 				add(descriptionForm);
 				revalidate();
