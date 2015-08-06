@@ -10,7 +10,8 @@ public class Frame extends JFrame {
 	public Frame() {
 		createFrame();
 	}
-	private void createFrame(){
+
+	private void createFrame() {
 		try {
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		} catch (Exception e) {
@@ -22,6 +23,10 @@ public class Frame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		
+
+	}
+
+	public void a() {
+
 	}
 }
