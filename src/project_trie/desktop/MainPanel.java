@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
 						String w = t.get(navigationPanel.getSearchArea()
 								.getText());
 						if (w != null) {
-							add(new Table());
+
 							//revalidate();
 							//repaint();
 							System.out.println(w);
