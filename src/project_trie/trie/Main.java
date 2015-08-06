@@ -1,5 +1,7 @@
 package project_trie.trie;
 
+import java.util.ArrayList;
+
 
 
 public class Main {
@@ -20,6 +22,9 @@ public class Main {
 		System.out.println(data.delete("funny"));
 		System.out.println(data.get("funny"));
 		System.out.println(data.delete("opaopa"));
+		ArrayList<String> arr = new ArrayList<String>();
+		data.list(arr);
+		System.out.println(arr);
 	}
 
 }

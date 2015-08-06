@@ -59,6 +59,10 @@ public class Trie {
 		return null;
 	}
 	
+	public boolean has(String key) {
+		return get(key) != null;
+	}
+	
 	private Node getRrecursivly(String key, Node node) {
 		if (key.length() == 0) return node;
 		int ascii_int = key.charAt(0) - 97;
@@ -83,10 +87,19 @@ public class Trie {
 		for (int i = 0; i < node.path.length; i++) {
 			if (node.path[i] != null ) {
 				 letter = Character.toString((char) (i + 97));
-				 
+				 System.out.println(i + " ");
+				 System.out.println(letter);
+				 if (node.path[i].value != null) {
+					 result.add(node.path[i].value);
+					 System.out.println(node.path[i].value);
+				 }
 				 listRecursivly(node.path[i], result);
 			}
 		}
+	}
+	
+	public void list(ArrayList<String> words) {
+		listRecursivly(top, words);
 	}
 	
 }
