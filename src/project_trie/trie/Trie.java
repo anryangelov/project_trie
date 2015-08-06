@@ -1,5 +1,7 @@
 package project_trie.trie;
 
+import java.util.ArrayList;
+
 
 
 public class Trie {
@@ -75,4 +77,16 @@ public class Trie {
 		}
 		return false;
 	}
+	
+	private void listRecursivly(Node node, ArrayList<String> result) {
+		String letter;
+		for (int i = 0; i < node.path.length; i++) {
+			if (node.path[i] != null ) {
+				 letter = Character.toString((char) (i + 97));
+				 
+				 listRecursivly(node.path[i], result);
+			}
+		}
+	}
+	
 }
