@@ -17,6 +17,7 @@ public class Main {
 		data.add("abc", "meaning of abc");
 		data.add("abczz", "meaning of abczz");
 		data.add("abzd", "meaning of abzd");
+		data.add("bbbbb", "many b");
 		System.out.println(data);
 		System.out.println(data.get("abc"));
 		System.out.println(data.get("abczz"));
