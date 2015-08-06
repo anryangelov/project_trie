@@ -38,14 +38,13 @@ public class Trie implements Serializable {
 
 	private void addRecursivly(String key, String value, Node node) {
 
-
 		if (key.length() == 0) {
 			node.value = value;
 			return;
 		}
-		int position = Character.isUpperCase(key.charAt(0)) ? 'A': 'a';
+		key = key.toLowerCase();
 		Node nextNode;
-		int ascii_int = key.charAt(0) - position;
+		int ascii_int = key.charAt(0) - 97;
 		key = key.substring(1, key.length());
 		if (node.path[ascii_int] == null) {
 			nextNode = new Node();
@@ -64,11 +63,11 @@ public class Trie implements Serializable {
 	}
 
 	private Node getRrecursivly(String key, Node node) {
-		if (key.length() == 0){
+		if (key.length() == 0) {
 			return node;
 		}
-		int position = Character.isUpperCase(key.charAt(0)) ? 'A' : 'a';
-		int ascii_int = key.charAt(0) - position;
+		key = key.toLowerCase();
+		int ascii_int = key.charAt(0) - 97;
 		key = key.substring(1, key.length());
 		if (node.path[ascii_int] != null) {
 			return getRrecursivly(key, node.path[ascii_int]);
