@@ -2,38 +2,29 @@ package project_trie.trie;
 
 import java.util.ArrayList;
 
-
-
 public class Trie {
 	
 	public Node top;
-	private String stringResult;
+	int size;
 	
 	public Trie() {
 		top = new Node();
+		size = 0;
 	}
 	
 	public String toString() {
-		stringResult = "";
-		traverseRecursivly(top);
-		return stringResult;
-	}
-	
-	private void traverseRecursivly(Node node) {
-		String letter;
-		if (node.value != null) stringResult += "--> " + "( " + node.value + " ) ";
-		for (int i = 0; i < node.path.length; i++) {
-			if (node.path[i] != null ) {
-				 letter = Character.toString((char) (i + 97));
-				 stringResult += letter + " ";
-				 //if (node.path[i].value != null) res += "--> " + node.path[i].value + "\n" + res.replace("[a-z]", " ");
-				 traverseRecursivly(node.path[i]);
-			}
+		String res = "";
+		ArrayList<String> words = new ArrayList<String>();
+		listRecursivly(top, words, "", true);
+		for (int i = 0; i < words.size(); i += 2) {
+			res += words.get(i) + " - " + words.get(i+1) + "\n";
 		}
+		return res;
 	}
 	
 	public void add(String key, String value) {
 		addRecursivly(key, value, top);
+		size++;
 	}
 	
 	private void addRecursivly(String key, String value, Node node) {
@@ -73,33 +64,58 @@ public class Trie {
 		return null;
 	}
 	
-	public boolean delete(String key) {
+	public boolean remove(String key) {
 		Node node = getRrecursivly(key, top);
 		if (node != null) {
 			node.value = null;
+			size--;
 			return true;
 		}
 		return false;
 	}
 	
-	private void listRecursivly(Node node, ArrayList<String> result) {
-		String letter;
+	public void update(String key, String value) {
+		add(key, value);
+	}
+	
+	private void listRecursivly(Node node, ArrayList<String> result, String word, boolean withValue) {
+		char letter;
 		for (int i = 0; i < node.path.length; i++) {
 			if (node.path[i] != null ) {
-				 letter = Character.toString((char) (i + 97));
-				 System.out.println(i + " ");
-				 System.out.println(letter);
+				 letter = (char) (i + 97);
+				 word += letter;
 				 if (node.path[i].value != null) {
-					 result.add(node.path[i].value);
-					 System.out.println(node.path[i].value);
+					 result.add(word);
+					 if (withValue) result.add(node.path[i].value);
 				 }
-				 listRecursivly(node.path[i], result);
+				 listRecursivly(node.path[i], result, word, withValue);
+				 word = word.substring(0, word.length() - 1);
 			}
 		}
 	}
 	
-	public void list(ArrayList<String> words) {
-		listRecursivly(top, words);
+	public ArrayList<String> list() {
+		ArrayList<String> words = new ArrayList<String>();
+		listRecursivly(top, words, "", false);
+		return words;
 	}
 	
+	public ArrayList<String> list(String root) {
+		Node node = getRrecursivly(root, top);
+		ArrayList<String> words = new ArrayList<String>();
+		listRecursivly(node, words, root, false);
+		return words;
+	}
+	
+	public int size() {
+		return size;
+	}
+	
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	public void clear() {
+		top = new Node();
+	}
 }
