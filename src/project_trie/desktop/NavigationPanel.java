@@ -19,13 +19,21 @@ public class NavigationPanel extends JPanel {
 	private void createPanel() {
 		setLayout(null);
 		setPreferredSize(new Dimension(500, 100));
-		setBackground(Color.ORANGE);
+		//setBackground(Color.ORANGE);
 		searchArea.setBounds(10, 10, 300, 30);
 		add(searchArea);
 		searchButton.setBounds(320, 10, 200, 30);
 		add(searchButton);
-		addWord.setBounds(520, 10, 200, 30);
-		add(addWord);
+		getAddWord().setBounds(520, 10, 200, 30);
+		add(getAddWord());
 
+	}
+
+	public JButton getAddWord() {
+		return addWord;
+	}
+
+	public void setAddWord(JButton addWord) {
+		this.addWord = addWord;
 	}
 }

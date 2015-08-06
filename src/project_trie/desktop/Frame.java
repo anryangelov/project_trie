@@ -23,10 +23,6 @@ public class Frame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-
-	}
-
-	public void a() {
-
+		setResizable(false);
 	}
 }
