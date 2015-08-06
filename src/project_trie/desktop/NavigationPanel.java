@@ -1,6 +1,5 @@
 package project_trie.desktop;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -19,14 +18,12 @@ public class NavigationPanel extends JPanel {
 	private void createPanel() {
 		setLayout(null);
 		setPreferredSize(new Dimension(500, 100));
-		//setBackground(Color.ORANGE);
 		getSearchArea().setBounds(10, 10, 300, 30);
 		add(getSearchArea());
 		getSearchButton().setBounds(320, 10, 200, 30);
 		add(getSearchButton());
 		getAddWord().setBounds(520, 10, 200, 30);
 		add(getAddWord());
-
 	}
 
 	public JButton getAddWord() {
@@ -48,5 +45,4 @@ public class NavigationPanel extends JPanel {
 	public void setSearchButton(JButton searchButton) {
 		this.searchButton = searchButton;
 	}
-
 }
