@@ -1,52 +1,25 @@
 package project_trie.trie;
 
-<<<<<<< HEAD
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Trie implements Serializable {
-=======
-import java.util.ArrayList;
->>>>>>> refactoring
 
 	public Node top;
-<<<<<<< HEAD
 	private String stringResult;
-
-=======
 	int size;
-	
->>>>>>> refactoring
+
 	public Trie() {
 		top = new Node();
 		size = 0;
 	}
 
 	public String toString() {
-<<<<<<< HEAD
-		stringResult = "";
-		traverseRecursivly(top);
-		return stringResult;
-	}
-
-	private void traverseRecursivly(Node node) {
-		String letter;
-		if (node.value != null)
-			stringResult += "--> " + "( " + node.value + " ) ";
-		for (int i = 0; i < node.path.length; i++) {
-			if (node.path[i] != null) {
-				letter = Character.toString((char) (i + 97));
-				stringResult += letter + " ";
-				// if (node.path[i].value != null) res += "--> " +
-				// node.path[i].value + "\n" + res.replace("[a-z]", " ");
-				traverseRecursivly(node.path[i]);
-			}
-=======
 		String res = "";
 		ArrayList<String> words = new ArrayList<String>();
 		listRecursivly(top, words, "", true);
 		for (int i = 0; i < words.size(); i += 2) {
 			res += words.get(i) + " - " + words.get(i+1) + "\n";
->>>>>>> refactoring
 		}
 		return res;
 	}
@@ -81,15 +54,11 @@ import java.util.ArrayList;
 			return node.value;
 		return null;
 	}
-<<<<<<< HEAD
 
-=======
-	
 	public boolean has(String key) {
 		return get(key) != null;
 	}
 	
->>>>>>> refactoring
 	private Node getRrecursivly(String key, Node node) {
 		if (key.length() == 0) {
 			return node;
@@ -102,13 +71,8 @@ import java.util.ArrayList;
 		}
 		return null;
 	}
-<<<<<<< HEAD
-
-	public boolean delete(String key) {
-=======
 	
 	public boolean remove(String key) {
->>>>>>> refactoring
 		Node node = getRrecursivly(key, top);
 		if (node != null) {
 			node.value = null;
