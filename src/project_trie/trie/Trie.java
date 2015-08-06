@@ -1,8 +1,10 @@
 package project_trie.trie;
 
+import java.io.Serializable;
 
 
-public class Trie {
+
+public class Trie implements Serializable{
 	
 	public Node top;
 	private String stringResult;

@@ -25,8 +25,8 @@ public class AddWordFormPanel extends JPanel {
 		// setBackground(Color.BLUE);
 		word.setBounds(10, 20, 200, 32);
 		add(word);
-		description.setBounds(10, 55, 800, 300);
-		add(description);
+		getDescription().setBounds(10, 55, 800, 300);
+		add(getDescription());
 		getSubmit().setBounds(720, 370, 90, 30);
 		add(getSubmit());
 
@@ -34,5 +34,13 @@ public class AddWordFormPanel extends JPanel {
 
 	public JButton getSubmit() {
 		return submit;
+	}
+
+	public JTextArea getDescription() {
+		return description;
+	}
+
+	public void setDescription(JTextArea description) {
+		this.description = description;
 	}
 }

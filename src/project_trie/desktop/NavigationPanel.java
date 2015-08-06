@@ -20,8 +20,8 @@ public class NavigationPanel extends JPanel {
 		setLayout(null);
 		setPreferredSize(new Dimension(500, 100));
 		//setBackground(Color.ORANGE);
-		searchArea.setBounds(10, 10, 300, 30);
-		add(searchArea);
+		getSearchArea().setBounds(10, 10, 300, 30);
+		add(getSearchArea());
 		searchButton.setBounds(320, 10, 200, 30);
 		add(searchButton);
 		getAddWord().setBounds(520, 10, 200, 30);
@@ -36,4 +36,9 @@ public class NavigationPanel extends JPanel {
 	public void setAddWord(JButton addWord) {
 		this.addWord = addWord;
 	}
+
+	public JTextArea getSearchArea() {
+		return searchArea;
+	}
+
 }
