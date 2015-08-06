@@ -22,8 +22,8 @@ public class NavigationPanel extends JPanel {
 		//setBackground(Color.ORANGE);
 		getSearchArea().setBounds(10, 10, 300, 30);
 		add(getSearchArea());
-		searchButton.setBounds(320, 10, 200, 30);
-		add(searchButton);
+		getSearchButton().setBounds(320, 10, 200, 30);
+		add(getSearchButton());
 		getAddWord().setBounds(520, 10, 200, 30);
 		add(getAddWord());
 
@@ -39,6 +39,14 @@ public class NavigationPanel extends JPanel {
 
 	public JTextArea getSearchArea() {
 		return searchArea;
+	}
+
+	public JButton getSearchButton() {
+		return searchButton;
+	}
+
+	public void setSearchButton(JButton searchButton) {
+		this.searchButton = searchButton;
 	}
 
 }

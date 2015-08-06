@@ -2,6 +2,7 @@ package project_trie.desktop;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -27,14 +28,43 @@ public class MainPanel extends JPanel {
 							"Please enter a word in the text area");
 					return;
 				}
-				descriptionForm.getWord().setText(navigationPanel.getSearchArea().getText());;
-				descriptionForm.getDescription().setText("Enter description here");
+				descriptionForm.getWord().setText(
+						navigationPanel.getSearchArea().getText());
+				;
+				descriptionForm.getDescription().setText(
+						"Enter description here");
 				descriptionForm.setBounds(0, 70, 950, 500);
 				add(descriptionForm);
 				revalidate();
 				repaint();
 			}
 		});
+		File f = new File("dictionary.ser");
+		navigationPanel.getSearchButton().addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Trie t = null;
+						if (!f.exists()) {
+							JOptionPane.showMessageDialog(null,
+									"Dictionary is Empty");
+							return;
+						} else {
+							try {
+								t = FileMenager.deserialize(f.getName());
+							} catch (ClassNotFoundException e1) {
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+						String w = t.get(navigationPanel.getSearchArea()
+								.getText());
+						if (w != null) {
+							System.out.println(w);
+						}
+					}
+				});
 		descriptionForm.getSubmit().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -49,7 +79,6 @@ public class MainPanel extends JPanel {
 				try {
 					FileMenager.serialize(dictionary, "dictionary.ser");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				revalidate();

@@ -5,9 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
-public class FileMenager implements Serializable{
+public class FileMenager {
 	 @SuppressWarnings("resource")
 	    public static void serialize(Trie words, String fileName) throws IOException {
 	        try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
