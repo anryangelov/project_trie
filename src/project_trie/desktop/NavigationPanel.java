@@ -1,7 +1,6 @@
 package project_trie.desktop;
 
 import java.awt.Dimension;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;

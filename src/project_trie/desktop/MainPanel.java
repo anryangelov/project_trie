@@ -5,16 +5,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-
 import project_trie.trie.FileManager;
-import project_trie.trie.Table;
 
 public class MainPanel extends JPanel {
 	private NavigationPanel navigationPanel;
@@ -66,15 +59,13 @@ public class MainPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// pass the word from the text area as argument
-						//remove(descriptionForm);
+						// remove(descriptionForm);
 						String key = navigationPanel.getSearchArea().getText();
 						String word = fileManager.getDictionary().get(key);
 						tab = new Table(findAllWords(key));
 						tab.setBounds(12, 70, 600, 500);
 						add(tab);
 						navigationPanel.getSearchArea().setText("");
-						//revalidate();
-					//	repaint();
 						if (word != null) {
 							System.out.println(word);
 						} else {
