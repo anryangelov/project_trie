@@ -1,17 +1,34 @@
 package project_trie.desktop;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.*;
 
 public class AddWordFormPanel extends JPanel {
 	private JTextArea description = new JTextArea();
-	private JButton submit = new JButton("submit");
+	private JButton submit = createButton("submit", KeyEvent.VK_ENTER);
 	private JTextArea word = new JTextArea();
 
 	public AddWordFormPanel() {
+		setBackground(Color.WHITE);
 		createForm();
 	}
+	 public  JButton createButton(String name, int virtualKey) {
+	        JButton btn = new JButton(name);
+	        InputMap im = btn.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	        ActionMap am = btn.getActionMap();
+	        im.put(KeyStroke.getKeyStroke(virtualKey, 0), "clickMe");
+	        am.put("clickMe", new AbstractAction() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	              //  JButton btn = (JButton) e.getSource();
+	                btn.doClick();
+	            }
+	        });
+	        return btn;
+	    }
 
 	public void createForm() {
 		setLayout(null);

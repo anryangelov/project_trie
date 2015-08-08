@@ -1,9 +1,15 @@
 package project_trie.desktop;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 public class NavigationPanel extends JPanel {
 	private JTextArea searchArea = new JTextArea();
@@ -14,6 +20,21 @@ public class NavigationPanel extends JPanel {
 	public NavigationPanel() {
 		createPanel();
 	}
+	 public  JButton createButton(String name, int virtualKey) {
+	        JButton btn = new JButton(name);
+	        InputMap im = btn.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	        ActionMap am = btn.getActionMap();
+	        im.put(KeyStroke.getKeyStroke(virtualKey, 0), "clickMe");
+	        am.put("clickMe", new AbstractAction() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                JButton btn = (JButton) e.getSource();
+	                btn.doClick();
+	            }
+	        });
+	        return btn;
+	    }
+
 
 	private void createPanel() {
 		setLayout(null);
