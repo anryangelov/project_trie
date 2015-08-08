@@ -10,6 +10,7 @@ public class NavigationPanel extends JPanel {
 	private JTextArea searchArea = new JTextArea();
 	private JButton searchButton = new JButton("search word");
 	private JButton addWord = new JButton("add word");
+	private JButton removeButton = new JButton("remove");
 
 	public NavigationPanel() {
 		createPanel();
@@ -24,14 +25,12 @@ public class NavigationPanel extends JPanel {
 		add(getSearchButton());
 		getAddWord().setBounds(520, 10, 200, 30);
 		add(getAddWord());
+		removeButton.setBounds(720, 10, 200, 30);
+		add(removeButton);
 	}
 
 	public JButton getAddWord() {
 		return addWord;
-	}
-
-	public void setAddWord(JButton addWord) {
-		this.addWord = addWord;
 	}
 
 	public JTextArea getSearchArea() {
@@ -42,7 +41,7 @@ public class NavigationPanel extends JPanel {
 		return searchButton;
 	}
 
-	public void setSearchButton(JButton searchButton) {
-		this.searchButton = searchButton;
+	public JButton getRemoveButton() {
+		return removeButton;
 	}
 }

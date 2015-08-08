@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class AddWordFormPanel extends JPanel {
-
 	private JTextArea description = new JTextArea();
 	private JButton submit = new JButton("submit");
 	private JTextArea word = new JTextArea();
@@ -16,14 +15,13 @@ public class AddWordFormPanel extends JPanel {
 
 	public void createForm() {
 		setLayout(null);
-		// setBackground(Color.BLUE);
+		submit.setToolTipText("Press the button to save the word");
 		getWord().setBounds(10, 20, 200, 32);
 		add(getWord());
 		getDescription().setBounds(10, 55, 800, 300);
 		add(getDescription());
-		getSubmit().setBounds(720, 370, 90, 30);
+		submit.setBounds(720, 370, 90, 30);
 		add(getSubmit());
-
 	}
 
 	public JButton getSubmit() {
