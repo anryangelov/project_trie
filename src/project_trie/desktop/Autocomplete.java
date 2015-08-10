@@ -22,7 +22,8 @@ public class Autocomplete {
 		return false;
 	}
 
-	private static void setAdjusting(JComboBox<String> cbInput, boolean adjusting) {
+	private static void setAdjusting(JComboBox<String> cbInput,
+			boolean adjusting) {
 		cbInput.putClientProperty("is_adjusting", adjusting);
 	}
 
