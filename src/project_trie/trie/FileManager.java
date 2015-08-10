@@ -6,15 +6,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JOptionPane;
 
 public class FileManager {
-	private Trie dictionary;
+	public Trie dictionary;
+	private static final String FILE_NAME = "dictionary.ser";
 
-	public FileManager(String file) {
-		File f = new File(file);
+	public FileManager() {
+		File f = new File(FILE_NAME);
 		if (!f.exists()) {
 			JOptionPane.showMessageDialog(null, "Dictionary is Empty");
+			dictionary = new Trie();
 			return;
 		} else {
 			try {
@@ -27,8 +30,17 @@ public class FileManager {
 		}
 	}
 
+	public  void saveChanges() {
+		// save changes everytime when word is added or removed
+		try {
+			serialize(dictionary, FILE_NAME);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	@SuppressWarnings("resource")
-	public void serialize(Trie words, String fileName) throws IOException {
+	public static void serialize(Trie words, String fileName) throws IOException {
 		try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
 			ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
 			objOut.writeObject(words);

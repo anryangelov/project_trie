@@ -2,12 +2,8 @@ package project_trie.desktop;
 
 import java.awt.Dimension;
 import java.io.IOException;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-
-import project_trie.trie.FileManager;
 
 public class Frame extends JFrame {
 	public Frame() throws ClassNotFoundException, IOException {
@@ -16,7 +12,7 @@ public class Frame extends JFrame {
 
 	private void createFrame() throws ClassNotFoundException, IOException {
 		try {
-			UIManager.setLookAndFeel(new NimbusLookAndFeel());
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

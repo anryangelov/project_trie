@@ -1,29 +1,33 @@
 package project_trie.desktop;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-public class AddWordFormPanel extends JPanel {
-	private JTextArea description = new JTextArea();
-	private JButton submit = createButton("submit", KeyEvent.VK_ENTER);
-	private JTextArea word = new JTextArea();
+public class DescriptionFormPanel extends JPanel {
+	private JTextArea description;
+	private JButton submit;
+	private JTextField word;
 
-	public AddWordFormPanel() {
-		setBackground(Color.WHITE);
+	public DescriptionFormPanel() {
+		description = new JTextArea();
+		submit = new JButton("submit");
+		word = new JTextField();
+	//	setBackground(Color.WHITE);
 		createForm();
 	}
 	 public  JButton createButton(String name, int virtualKey) {
 	        JButton btn = new JButton(name);
-	        InputMap im = btn.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	        InputMap im = btn.getInputMap(virtualKey);
 	        ActionMap am = btn.getActionMap();
 	        im.put(KeyStroke.getKeyStroke(virtualKey, 0), "clickMe");
 	        am.put("clickMe", new AbstractAction() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	              //  JButton btn = (JButton) e.getSource();
+	                JButton btn = (JButton) e.getSource();
 	                btn.doClick();
 	            }
 	        });
@@ -49,15 +53,7 @@ public class AddWordFormPanel extends JPanel {
 		return description;
 	}
 
-	public void setDescription(JTextArea description) {
-		this.description = description;
-	}
-
-	public JTextArea getWord() {
+	public JTextField getWord() {
 		return word;
-	}
-
-	public void setWord(String word) {
-		this.word.setText(word);
 	}
 }

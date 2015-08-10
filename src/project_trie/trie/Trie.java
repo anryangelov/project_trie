@@ -19,7 +19,7 @@ public class Trie implements Serializable {
 		ArrayList<String> words = new ArrayList<String>();
 		listRecursivly(top, words, "", true);
 		for (int i = 0; i < words.size(); i += 2) {
-			res += words.get(i) + " - " + words.get(i+1) + "\n";
+			res += words.get(i) + " - " + words.get(i + 1) + "\n";
 		}
 		return res;
 	}
@@ -55,10 +55,23 @@ public class Trie implements Serializable {
 		return null;
 	}
 
+	public String printValue(String value) {
+		String res = "";
+		int a = 20;
+		for (int i = 0; i < value.length(); i++) {
+			res += value.charAt(i);
+			if (i == a) {
+				a += 20;
+				res += "\n";
+			}
+		}
+		return res;
+	}
+
 	public boolean has(String key) {
 		return get(key) != null;
 	}
-	
+
 	private Node getRrecursivly(String key, Node node) {
 		if (key.length() == 0) {
 			return node;
@@ -71,7 +84,7 @@ public class Trie implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public boolean remove(String key) {
 		Node node = getRrecursivly(key, top);
 		if (node != null) {
@@ -81,48 +94,50 @@ public class Trie implements Serializable {
 		}
 		return false;
 	}
-	
+
 	public void update(String key, String value) {
 		add(key, value);
 	}
-	
-	private void listRecursivly(Node node, ArrayList<String> result, String word, boolean withValue) {
+
+	private void listRecursivly(Node node, ArrayList<String> result,
+			String word, boolean withValue) {
 		char letter;
 		for (int i = 0; i < node.path.length; i++) {
-			if (node.path[i] != null ) {
-				 letter = (char) (i + 97);
-				 word += letter;
-				 if (node.path[i].value != null) {
-					 result.add(word);
-					 if (withValue) result.add(node.path[i].value);
-				 }
-				 listRecursivly(node.path[i], result, word, withValue);
-				 word = word.substring(0, word.length() - 1);
+			if (node.path[i] != null) {
+				letter = (char) (i + 97);
+				word += letter;
+				if (node.path[i].value != null) {
+					result.add(word);
+					if (withValue)
+						result.add(node.path[i].value);
+				}
+				listRecursivly(node.path[i], result, word, withValue);
+				word = word.substring(0, word.length() - 1);
 			}
 		}
 	}
-	
+
 	public ArrayList<String> list() {
 		ArrayList<String> words = new ArrayList<String>();
 		listRecursivly(top, words, "", false);
 		return words;
 	}
-	
+
 	public ArrayList<String> list(String root) {
 		Node node = getRrecursivly(root, top);
 		ArrayList<String> words = new ArrayList<String>();
 		listRecursivly(node, words, root, false);
 		return words;
 	}
-	
+
 	public int size() {
 		return size;
 	}
-	
+
 	public boolean isEmpty() {
 		return size == 0;
 	}
-	
+
 	public void clear() {
 		top = new Node();
 	}

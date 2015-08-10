@@ -7,22 +7,33 @@ import javax.swing.table.TableModel;
 
 public class BoxChecker {
 	public BoxChecker(JTable tab) {
-		TableModel tableModel = tab.getModel();
-		tableModel.addTableModelListener(new TableModelListener() {
+		TableModel model = tab.getModel();
+		model.addTableModelListener(new TableModelListener() {
 			@Override
 			public void tableChanged(TableModelEvent e) {
-				int rows = tableModel.getRowCount();
+				int rows = model.getRowCount();
 				for (int i = 0; i < rows; i++) {
-					if (tableModel.getValueAt(i, 2).equals(true)) {
+					if (model.getValueAt(i, 3).equals(true)) {
 						for (int j = 0; j < rows; j++) {
-							if (j != i
-									&& tableModel.getValueAt(j, 2).equals(true)) {
-								tableModel.setValueAt(false, j, 2);
+							if (j != i && model.getValueAt(j, 3).equals(true)) {
+								model.setValueAt(false, j, 3);
 							}
+
 						}
 					}
 				}
 			}
 		});
+	}
+
+	public static int isChecked(JTable table) {
+		for (int i = 0; i < table.getRowCount(); i++) {
+			for (int j = 0; j < table.getColumnCount(); j++) {
+				if (table.getValueAt(i, 3).equals(true)) {
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 }
