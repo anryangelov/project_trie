@@ -7,13 +7,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class Autocomplete {
+	JButton btn = new JButton();
 
 	private static boolean isAdjusting(JComboBox<String> cbInput) {
 		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
@@ -69,6 +72,7 @@ public class Autocomplete {
 					cbInput.dispatchEvent(e);
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						txtInput.setText(cbInput.getSelectedItem().toString());
+						NavigationPanel.searchButton.doClick();
 						cbInput.setPopupVisible(false);
 					}
 				}

@@ -2,14 +2,21 @@ package project_trie.desktop;
 
 import java.awt.Font;
 import java.util.List;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import project_trie.trie.Trie;
 
 public class Table {
 	public JTable createTable(List<String> allWords, Trie dictionary) {
 		JTable table = new JTable() {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column == 0 || column == 1 || column == 2 ? false : true;
+			}
 
 			@Override
 			public Class getColumnClass(int column) {

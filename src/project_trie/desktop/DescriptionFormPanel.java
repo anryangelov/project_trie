@@ -11,11 +11,13 @@ public class DescriptionFormPanel extends JPanel {
 	private JTextArea description;
 	private JButton submit;
 	private JTextField word;
+	private JScrollPane pane;
 
 	public DescriptionFormPanel() {
 		description = new JTextArea();
 		submit = new JButton("submit");
 		word = new JTextField();
+		pane = new JScrollPane();
 	//	setBackground(Color.WHITE);
 		createForm();
 	}
@@ -39,9 +41,11 @@ public class DescriptionFormPanel extends JPanel {
 		submit.setToolTipText("Press the button to save the word");
 		getWord().setBounds(10, 20, 200, 32);
 		add(getWord());
-		getDescription().setBounds(10, 55, 800, 300);
+		getDescription().setBounds(10, 55, 700, 300);
+		description.setLineWrap(true);
+		description.setWrapStyleWord(true);
 		add(getDescription());
-		submit.setBounds(720, 370, 90, 30);
+		submit.setBounds(620, 370, 90, 30);
 		add(getSubmit());
 	}
 

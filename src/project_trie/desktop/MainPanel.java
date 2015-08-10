@@ -1,17 +1,15 @@
 package project_trie.desktop;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -21,16 +19,19 @@ import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
 public class MainPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private NavigationPanel navigationPanel;
 	private DescriptionFormPanel descriptionForm;
-	Trie dictionary;
+	private Trie dictionary;
 	private FileManager fileManager;
 	private TablePanel tablePanel;
 	private JTextField searchedArea;
 	private JTextArea description;
-	private JScrollPane scroll;
+	private EditPanel editPanel;
+	private Font font = new Font("Serif", Font.ROMAN_BASELINE, 15);
 
 	MainPanel() {
+		setLayout(null);
 		setBackground(Color.WHITE);
 		fileManager = new FileManager();
 		dictionary = fileManager.getDictionary();
@@ -38,8 +39,8 @@ public class MainPanel extends JPanel {
 		descriptionForm = new DescriptionFormPanel();
 		searchedArea = navigationPanel.getSearchArea();
 		description = descriptionForm.getDescription();
-		setLayout(null);
 		navigationPanel.setBounds(0, 0, 1000, 50);
+		editPanel = new EditPanel();
 		add(navigationPanel);
 		navigationPanel.getAddWord().addActionListener(new ActionListener() {
 			@Override
@@ -50,7 +51,10 @@ public class MainPanel extends JPanel {
 					return;
 				}
 				removeTable(tablePanel);
+				// remove(editPanel);
 				add(createDescriptionForm("Enter description here"));
+				revalidate();
+				repaint();
 			}
 		});
 
@@ -60,6 +64,7 @@ public class MainPanel extends JPanel {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						removeTable(tablePanel);
+						remove(descriptionForm);
 						createTablePanel("", showAll());
 						revalidate();
 						repaint();
@@ -91,7 +96,7 @@ public class MainPanel extends JPanel {
 							JOptionPane.showMessageDialog(null,
 									"Please enter the word");
 						}
-						// searchedArea.setText("");
+						searchedArea.setText("");
 					}
 				});
 	}
@@ -106,20 +111,23 @@ public class MainPanel extends JPanel {
 		// pass list with all words as argument and also the
 		// dictionary as argument to fetch the value from it
 		tablePanel = new TablePanel(list, dictionary);
+		JTable table = tablePanel.getTable();
 		add(tablePanel);
 		revalidate();
 		repaint();
 		tablePanel.getRemove().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (BoxChecker.isChecked(tablePanel.getTable()) > -1) {
+				int data = BoxChecker.isChecked(tablePanel.getTable());
+				if (data > -1) {
+					String word = (String) table.getValueAt(data, 1);
 					removeTable(tablePanel);
 					// String key = searchedArea.getText();
-					dictionary.remove(key);
-					createTablePanel(key, list);
-					JOptionPane.showMessageDialog(null, searchedArea.getText()
-							+ " has been removed successfully");
-					searchedArea.setText("");
+					dictionary.remove(word);
+					list.remove(word);
+					createTablePanel(word, list);
+					revalidate();
+					repaint();
 					fileManager.saveChanges();
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select word");
@@ -127,30 +135,31 @@ public class MainPanel extends JPanel {
 
 			}
 		});
-		JTable table = tablePanel.getTable();
-		JTextArea area = new JTextArea();
-		// TO-DO find how to print the description in JLable with new Lines!!!
-		JLabel descriptionLabel = new JLabel();
-		editButton(descriptionLabel, table, area, key, list);
+		JTextArea descriptionLabel = new JTextArea();
+		editButton(descriptionLabel, table, key, list);
 
 		tablePanel.getViewDescription().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				descriptionLabel.setBounds(560, 5, 400, 450);
+				descriptionLabel.setLineWrap(true);
+				descriptionLabel.setWrapStyleWord(true);
+				descriptionLabel.setEditable(false);
+				descriptionLabel.setFont(font);
 				int data = BoxChecker.isChecked(table);
 				if (data > -1) {
-					remove(area);
+					remove(editPanel.getScroll());
 					revalidate();
 					repaint();
 					remove(descriptionLabel);
 					String value = (String) table.getValueAt(data, 2);
-					System.out.println(value.length());
-					descriptionLabel.setText("<html><p>" + value
-							+ "</p></html>");
+					descriptionLabel.setText(value);
 					// descriptionLabel.add((String)table.getValueAt(data, 2));
 					tablePanel.add(descriptionLabel);
 					revalidate();
 					repaint();
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select word");
 				}
 			}
 		});
@@ -170,53 +179,45 @@ public class MainPanel extends JPanel {
 					dictionary.add(key, description.getText());
 					fileManager.saveChanges();
 					remove(descriptionForm);
+					revalidate();
+					repaint();
 					JOptionPane.showMessageDialog(null, searchedArea.getText()
 							+ " has been added successfully");
 					description.setText("");
 					searchedArea.setText("");
-					revalidate();
-					repaint();
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Please reduce the description lenght");
 				}
 			}
 		});
-		revalidate();
-		repaint();
 		return descriptionForm;
 	}
 
-	public void editButton(JLabel descriptionLabel, JTable table,
-			JTextArea area, String key, List<String> list) {
+	public void editButton(JTextArea descriptionLabel, JTable table,
+			String key, List<String> list) {
 		tablePanel.getEdit().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tablePanel.remove(descriptionLabel);
 				int data = BoxChecker.isChecked(table);
 				if (data > -1) {
-					JButton save = new JButton("save");
-					tablePanel.add(save);
+					editPanel.getEditArea().setText(
+							(String) table.getValueAt(data, 2));
+					tablePanel.add(editPanel);
 					revalidate();
 					repaint();
-					save.setBounds(860, 220, 70, 25);
-					area.setText((String) table.getValueAt(data, 2));
-					area.setLineWrap(true);
-					area.setWrapStyleWord(true);
-					scroll = new JScrollPane(area);
-					tablePanel.add(scroll);
-					scroll.setBounds(560, 5, 400, 200);
-					save.addActionListener(new ActionListener() {
+					editPanel.getSave().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							if (area.getText().length() < 1100) {
+							if (editPanel.getEditArea().getText().length() < 1100) {
 								dictionary.update(
 										(String) table.getValueAt(data, 1),
-										area.getText());
+										editPanel.getEditArea().getText());
 								fileManager.saveChanges();
 								tablePanel.remove(descriptionLabel);
-								tablePanel.remove(area);
-								tablePanel.remove(save);
+								tablePanel.remove(editPanel.getEditArea());
+								tablePanel.remove(editPanel.getSave());
 								remove(tablePanel);
 								createTablePanel(key, list);
 								repaint();
