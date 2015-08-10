@@ -1,21 +1,23 @@
 package project_trie.desktop;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 public class NavigationPanel extends JPanel {
 	private JTextField searchArea = new JTextField();
 	private JButton searchButton = new JButton("search word");
 	private JButton addWord = new JButton("add word");
 	private JButton showAllWords = new JButton("show all");
+	private static final String COMMIT_ACTION = "commit";
 
-	public NavigationPanel() {
+	public NavigationPanel(List<String> keywords) {
+		searchArea.setFocusTraversalKeysEnabled(false);
+		Autocomplete.setupAutoComplete(searchArea, keywords);
 		setBackground(Color.DARK_GRAY);
 		createPanel();
 	}
