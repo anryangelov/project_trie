@@ -18,7 +18,7 @@ public class Frame extends JFrame {
 		}
 		setSize(new Dimension(1000, 600));
 		setTitle("Dictionary");
-		add(new MainPanel());
+		add(new NewMainPanel());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);

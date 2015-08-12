@@ -2,15 +2,18 @@ package project_trie.desktop;
 
 import java.awt.Font;
 import java.util.List;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
 public class Table extends JTable {
 	private static final long serialVersionUID = 1L;
 	private DefaultTableModel tableModel;
 
-	public Table(List<String> allWords, Trie dictionary) {
+	public Table(List<String> allWords) {
 		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -34,21 +37,32 @@ public class Table extends JTable {
 			}
 		};
 		getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-		// add header of the table
 		String header[] = new String[] { "NO", "Word", "Description", "" };
-		// add header in table model
-		tableModel.setColumnIdentifiers(header);
-		setModel(tableModel);
+		getTableModel().setColumnIdentifiers(header);
+		setModel(getTableModel());
 		getColumnModel().getColumn(0).setPreferredWidth(40);
 		for (int i = 0; i < allWords.size(); i++) {
-			tableModel.addRow(new Object[] { i + 1, allWords.get(i),
-					dictionary.get(allWords.get(i)), false });
+			getTableModel()
+					.addRow(new Object[] { i + 1, allWords.get(i),
+							FileManager.dictionary.get(allWords.get(i)), false });
 			setRowHeight(i, 40);
 		}
 		getColumnModel().getColumn(1).setPreferredWidth(145);
 		getColumnModel().getColumn(2).setPreferredWidth(250);
 		setPreferredScrollableViewportSize(getPreferredSize());
 		new BoxChecker(this);
+	}
+
+	public <T> T getColumnValue(int column) {
+		int data = BoxChecker.isChecked(this);
+		@SuppressWarnings("unchecked")
+		T value = (T) tableModel.getValueAt(data, column);
+		return value;
+	}
+
+	public <T> void setColumnValue(T value, int column) {
+		int data = BoxChecker.isChecked(this);
+		tableModel.setValueAt(value, data, column);
 	}
 
 	public DefaultTableModel getTableModel() {

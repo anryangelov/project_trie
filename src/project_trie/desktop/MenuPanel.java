@@ -7,14 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class NavigationPanel extends JPanel {
+public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField searchArea;
 	static JButton searchButton;
 	private JButton addWord;
 	private JButton showAllWords;
 
-	public NavigationPanel(List<String> keywords) {
+	public MenuPanel(List<String> keywords) {
+		setBounds(0, 0, 1000, 50);
 		searchArea = new JTextField();
 		searchButton = new JButton("search");
 		addWord = new JButton("add word");
@@ -26,7 +27,6 @@ public class NavigationPanel extends JPanel {
 	}
 
 	private void createPanel() {
-		// setLayout(null);
 		searchArea.setPreferredSize(new Dimension(200, 25));
 		setPreferredSize(new Dimension(500, 100));
 		searchArea.setBounds(10, 10, 300, 30);

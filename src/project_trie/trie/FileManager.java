@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 
 public class FileManager {
-	public Trie dictionary;
+	public static Trie dictionary;
 	private static final String FILE_NAME = "dictionary.ser";
 
 	public FileManager() {
@@ -30,7 +30,7 @@ public class FileManager {
 		}
 	}
 
-	public  void saveChanges() {
+	public  static void saveChanges() {
 		// save changes everytime when word is added or removed
 		try {
 			serialize(dictionary, FILE_NAME);
@@ -40,7 +40,7 @@ public class FileManager {
 	}
 
 	@SuppressWarnings("resource")
-	public static void serialize(Trie words, String fileName) throws IOException {
+	private static void serialize(Trie words, String fileName) throws IOException {
 		try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
 			ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
 			objOut.writeObject(words);

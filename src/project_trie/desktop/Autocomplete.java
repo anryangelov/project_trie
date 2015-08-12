@@ -22,19 +22,11 @@ public class Autocomplete {
 		setupAutoComplete(txtInput, dictionary);
 	}
 
-	public DefaultComboBoxModel<String> getModel() {
-		return model;
-	}
-
-	public JComboBox<String> getCombo() {
-		return combo;
-	}
-
 	public void setupAutoComplete(JTextField txtInput, List<String> dictionary) {
 		model = new DefaultComboBoxModel<>();
 		combo = new JComboBox<String>(model);
 		combo.setPreferredSize(new Dimension(combo.getPreferredSize().width, 0));
-	//	Collections.sort(dictionary);
+		// Collections.sort(dictionary);
 		for (String word : dictionary) {
 			model.addElement(word);
 		}
@@ -52,7 +44,8 @@ public class Autocomplete {
 						if (combo.getSelectedItem() != null) {
 							combo.addItem(txtInput.getText());
 							txtInput.setText(combo.getSelectedItem().toString());
-							NavigationPanel.searchButton.doClick();
+							MenuPanel.searchButton.doClick();
+							combo.setPopupVisible(false);
 						}
 					}
 				}
