@@ -6,15 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
@@ -110,8 +106,8 @@ public class MainPanel extends JPanel {
 	private void createTablePanel(String key, List<String> list) {
 		// pass list with all words as argument and also the
 		// dictionary as argument to fetch the value from it
-		tablePanel = new TablePanel(list, dictionary);
-		JTable table = tablePanel.getTable();
+		Table table = new Table(list, dictionary);
+		tablePanel = new TablePanel(table);
 		add(tablePanel);
 		revalidate();
 		repaint();
@@ -235,12 +231,12 @@ public class MainPanel extends JPanel {
 	public List<String> findAllWords(String word) {
 		List<String> l = new ArrayList<String>();
 		for (String s : dictionary.list()) {
-			if (s.substring(0, 2).equals(word.substring(0, 2))) {
-				if (s.equals(word)) {
-					l.add(0, s);
-					continue;
-				}
+			// if (s.substring(0, 2).equals(word.substring(0, 2))) {
+			if (s.equals(word)) {
 				l.add(s);
+				continue;
+				// }
+				// l.add(s);
 			}
 		}
 		return l;

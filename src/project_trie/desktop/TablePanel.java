@@ -1,33 +1,28 @@
 package project_trie.desktop;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LookAndFeel;
-import javax.swing.table.DefaultTableModel;
-
-import project_trie.trie.Trie;
 
 public class TablePanel extends JPanel {
-	private JTable table;
+	private static final long serialVersionUID = 1L;
+	private Table table;
 	private JButton edit;
 	private JButton remove;
 	private JButton viewDescription;
 
-	public TablePanel(List<String> l, Trie t) {
+	public TablePanel(Table table) {
 		setBackground(Color.WHITE);
 		setLayout(null);
 		edit = new JButton("edit");
 		remove = new JButton("remove");
 		viewDescription = new JButton("view");
 		setBounds(12, 70, 1000, 500);
-		table = new Table().createTable(l, t);
+		this.table = table;
 		JScrollPane scrollPane = new JScrollPane(table,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

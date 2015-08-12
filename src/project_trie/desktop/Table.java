@@ -2,15 +2,16 @@ package project_trie.desktop;
 
 import java.awt.Font;
 import java.util.List;
-
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import project_trie.trie.Trie;
 
-public class Table {
-	public JTable createTable(List<String> allWords, Trie dictionary) {
-		JTable table = new JTable() {
+public class Table extends JTable {
+	private static final long serialVersionUID = 1L;
+	private DefaultTableModel tableModel;
+
+	public Table(List<String> allWords, Trie dictionary) {
+		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -32,27 +33,25 @@ public class Table {
 				}
 			}
 		};
-		table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
-		DefaultTableModel defaulthTableModel = new DefaultTableModel(0, 0);
+		getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
 		// add header of the table
 		String header[] = new String[] { "NO", "Word", "Description", "" };
 		// add header in table model
-		defaulthTableModel.setColumnIdentifiers(header);
-		table.setModel(defaulthTableModel);
-		// add row dynamically into the table
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tableModel.setColumnIdentifiers(header);
+		setModel(tableModel);
+		getColumnModel().getColumn(0).setPreferredWidth(40);
 		for (int i = 0; i < allWords.size(); i++) {
-			defaulthTableModel.addRow(new Object[] { i + 1, allWords.get(i),
+			tableModel.addRow(new Object[] { i + 1, allWords.get(i),
 					dictionary.get(allWords.get(i)), false });
-			table.setRowHeight(i, 40);
+			setRowHeight(i, 40);
 		}
-		table.getColumnModel().getColumn(1).setPreferredWidth(145);
-		table.getColumnModel().getColumn(2).setPreferredWidth(250);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-		// table.setEnabled(false);
-		table.setColumnSelectionInterval(0, 3);
-		new BoxChecker(table);
-		return table;
+		getColumnModel().getColumn(1).setPreferredWidth(145);
+		getColumnModel().getColumn(2).setPreferredWidth(250);
+		setPreferredScrollableViewportSize(getPreferredSize());
+		new BoxChecker(this);
+	}
+
+	public DefaultTableModel getTableModel() {
+		return tableModel;
 	}
 }

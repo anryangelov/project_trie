@@ -2,84 +2,60 @@ package project_trie.desktop;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class Autocomplete {
-	JButton btn = new JButton();
+	List<String> items;
+	private DefaultComboBoxModel<String> model;
+	private JComboBox<String> combo;
 
-	private static boolean isAdjusting(JComboBox<String> cbInput) {
-		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
-			return (Boolean) cbInput.getClientProperty("is_adjusting");
-		}
-		return false;
+	public Autocomplete(JTextField txtInput, List<String> dictionary) {
+		setupAutoComplete(txtInput, dictionary);
 	}
 
-	private static void setAdjusting(JComboBox<String> cbInput,
-			boolean adjusting) {
-		cbInput.putClientProperty("is_adjusting", adjusting);
+	public DefaultComboBoxModel<String> getModel() {
+		return model;
 	}
 
-	@SuppressWarnings("serial")
-	public static void setupAutoComplete(final JTextField txtInput,
-			final List<String> items) {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-		JComboBox<String> cbInput = new JComboBox<String>(model) {
-			public Dimension getPreferredSize() {
-				return new Dimension(super.getPreferredSize().width, 0);
-			}
-		};
-		setAdjusting(cbInput, false);
-		for (String item : items) {
-			model.addElement(item);
-		}
-		cbInput.setSelectedItem(null);
-		cbInput.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!isAdjusting(cbInput)) {
-					if (cbInput.getSelectedItem() != null) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
-					}
-				}
-			}
-		});
+	public JComboBox<String> getCombo() {
+		return combo;
+	}
 
+	public void setupAutoComplete(JTextField txtInput, List<String> dictionary) {
+		model = new DefaultComboBoxModel<>();
+		combo = new JComboBox<String>(model);
+		combo.setPreferredSize(new Dimension(combo.getPreferredSize().width, 0));
+	//	Collections.sort(dictionary);
+		for (String word : dictionary) {
+			model.addElement(word);
+		}
+		combo.setSelectedItem(null);
 		txtInput.addKeyListener(new KeyAdapter() {
-
 			@Override
 			public void keyPressed(KeyEvent e) {
-				setAdjusting(cbInput, true);
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					if (cbInput.isPopupVisible()) {
-						e.setKeyCode(KeyEvent.VK_ENTER);
-					}
-				}
+				combo.putClientProperty("", true);
 				if (e.getKeyCode() == KeyEvent.VK_ENTER
 						|| e.getKeyCode() == KeyEvent.VK_UP
 						|| e.getKeyCode() == KeyEvent.VK_DOWN) {
-					e.setSource(cbInput);
-					cbInput.dispatchEvent(e);
+					e.setSource(combo);
+					combo.dispatchEvent(e);
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
-						NavigationPanel.searchButton.doClick();
-						cbInput.setPopupVisible(false);
+						if (combo.getSelectedItem() != null) {
+							combo.addItem(txtInput.getText());
+							txtInput.setText(combo.getSelectedItem().toString());
+							NavigationPanel.searchButton.doClick();
+						}
 					}
 				}
-				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					cbInput.setPopupVisible(false);
-				}
-				setAdjusting(cbInput, false);
 			}
 		});
 		txtInput.getDocument().addDocumentListener(new DocumentListener() {
@@ -96,21 +72,21 @@ public class Autocomplete {
 			}
 
 			private void updateList() {
-				setAdjusting(cbInput, true);
+				combo.putClientProperty("", true);
 				model.removeAllElements();
 				String input = txtInput.getText();
 				if (!input.isEmpty()) {
-					for (String item : items) {
-						if (item.toLowerCase().startsWith(input.toLowerCase())) {
-							model.addElement(item);
+					for (String word : dictionary) {
+						if (word.toLowerCase().startsWith(input.toLowerCase())) {
+							model.addElement(word);
 						}
 					}
+					model.addElement(input);
 				}
-				cbInput.setPopupVisible(model.getSize() > 0);
-				setAdjusting(cbInput, false);
+				combo.setPopupVisible(model.getSize() > 0);
 			}
 		});
 		txtInput.setLayout(new BorderLayout());
-		txtInput.add(cbInput, BorderLayout.SOUTH);
+		txtInput.add(combo, BorderLayout.SOUTH);
 	}
 }
