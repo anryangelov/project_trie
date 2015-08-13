@@ -2,7 +2,9 @@ package project_trie.desktop;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Collections;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,6 +23,7 @@ public class MenuPanel extends JPanel {
 		addWord = new JButton("add word");
 		showAllWords = new JButton("show all");
 		searchArea.setFocusTraversalKeysEnabled(false);
+		Collections.sort(keywords);
 		new Autocomplete(searchArea, keywords);
 		setBackground(Color.DARK_GRAY);
 		createPanel();

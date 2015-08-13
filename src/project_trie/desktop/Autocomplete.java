@@ -26,7 +26,6 @@ public class Autocomplete {
 		model = new DefaultComboBoxModel<>();
 		combo = new JComboBox<String>(model);
 		combo.setPreferredSize(new Dimension(combo.getPreferredSize().width, 0));
-		// Collections.sort(dictionary);
 		for (String word : dictionary) {
 			model.addElement(word);
 		}

@@ -13,18 +13,21 @@ public class Frame extends JFrame {
 	}
 
 	private void createFrame() throws ClassNotFoundException, IOException {
-		try {
-			UIManager.setLookAndFeel(UIManager
-					.getCrossPlatformLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			UIManager.setLookAndFeel(UIManager
+//					.getCrossPlatformLookAndFeelClassName());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		setSize(new Dimension(1000, 600));
 		setTitle("Dictionary");
 		add(new MainPanel());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		setResizable(false);
+		validate();
+        repaint();
+		//pack();
+		//setResizable(false);
 	}
 }

@@ -51,6 +51,9 @@ public class MainPanel extends JPanel {
 		menu.getShowAllWords().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				tabPanel.removeLable();
+				revalidate();
+				repaint();
 				tabPanel.removeTable();
 				tabPanel.addTable(new Table(dictionary.list()));
 				cl.show(bottom, "tablePanel");
