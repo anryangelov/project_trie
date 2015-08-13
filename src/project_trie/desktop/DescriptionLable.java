@@ -10,15 +10,12 @@ public class DescriptionLable extends JTextArea {
 	private Font font = new Font("Serif", Font.ROMAN_BASELINE, 15);
 
 	public DescriptionLable(String text) {
-		if (text.length() > 1100) {
-			JOptionPane.showMessageDialog(null, "reduce text description");
-		} else {
-			setBounds(560, 5, 400, 450);
-			setText(text);
-			setLineWrap(true);
-			setWrapStyleWord(true);
-			setEditable(false);
-			setFont(font);
-		}
+		setBounds(560, 0, 400, 550);
+		setText(text);
+		setLineWrap(true);
+		setWrapStyleWord(true);
+		setEditable(false);
+		setFont(font);
 	}
+	
 }

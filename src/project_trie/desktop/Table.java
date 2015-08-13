@@ -52,12 +52,22 @@ public class Table extends JTable {
 		setPreferredScrollableViewportSize(getPreferredSize());
 		new BoxChecker(this);
 	}
+	
+	public void removeRow(){
+		int data = BoxChecker.isChecked(this);
+		if (data > -1) {
+			tableModel.removeRow(data);
+		}
+	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T getColumnValue(int column) {
 		int data = BoxChecker.isChecked(this);
-		@SuppressWarnings("unchecked")
-		T value = (T) tableModel.getValueAt(data, column);
-		return value;
+		if (data > -1) {
+			return (T) tableModel.getValueAt(data, column);
+
+		}
+		return null;
 	}
 
 	public <T> void setColumnValue(T value, int column) {

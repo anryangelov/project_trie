@@ -1,43 +1,28 @@
 package project_trie.desktop;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import project_trie.trie.FileManager;
 
 public class DescriptionFormPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JTextArea description;
 	private JButton submit;
 	private JTextField word;
-	private JScrollPane pane;
 
 	public DescriptionFormPanel() {
 		description = new JTextArea();
-		submit = createButton("submit", KeyEvent.VK_ENTER);
+		submit = new JButton("submit");
 		word = new JTextField();
-		pane = new JScrollPane();
-	
 		createForm();
 	}
-	 public  JButton createButton(String name, int virtualKey) {
-		 JButton btn = new JButton(name);
-	        InputMap im = btn.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-	        ActionMap am = btn.getActionMap();
-	        im.put(KeyStroke.getKeyStroke(virtualKey, 0), "clickMe");
-	        am.put("clickMe", new AbstractAction() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                JButton btn = (JButton) e.getSource();
-	                btn.doClick();
-	            }
-	        });
-	        return btn;
-	    }
 
 	public void createForm() {
 		setLayout(null);
@@ -52,16 +37,16 @@ public class DescriptionFormPanel extends JPanel {
 		submit.setBounds(620, 370, 90, 30);
 		add(getSubmit());
 		submit.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileManager.dictionary.add(word.getText(), description.getText());
+				FileManager.dictionary.add(word.getText(),
+						description.getText());
 				FileManager.saveChanges();
 				JOptionPane.showMessageDialog(null, word.getText()
 						+ " has been added successfully");
 				word.setText("");
-				description.setText("");
-				
+				description.setText("Enter description here..");
+				NewMainPanel.cl.first(NewMainPanel.bottom);
 			}
 		});
 	}
