@@ -46,7 +46,7 @@ public class DescriptionFormPanel extends JPanel {
 						+ " has been added successfully");
 				word.setText("");
 				description.setText("Enter description here..");
-				NewMainPanel.cl.first(NewMainPanel.bottom);
+				MainPanel.cl.first(MainPanel.bottom);
 			}
 		});
 	}
