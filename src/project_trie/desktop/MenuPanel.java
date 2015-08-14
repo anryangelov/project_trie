@@ -11,55 +11,49 @@ import javax.swing.JTextField;
 
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JTextField searchArea;
+	private JTextField searchField;
 	static JButton searchButton;
-	private JButton addWord;
-	private JButton showAllWords;
+	private JButton addButton;
+	private JButton allWordsButton;
 
 	public MenuPanel(List<String> keywords) {
 		setBounds(0, 0, 1000, 50);
-		searchArea = new JTextField();
+		searchField = new JTextField();
 		searchButton = new JButton("search");
-		addWord = new JButton("add word");
-		showAllWords = new JButton("show all");
-		searchArea.setFocusTraversalKeysEnabled(false);
-		Collections.sort(keywords);
-		new Autocomplete(searchArea, keywords);
+		addButton = new JButton("add word");
+		allWordsButton = new JButton("show all");
+		new Autocomplete(searchField, keywords);
 		setBackground(Color.DARK_GRAY);
 		createPanel();
 	}
 
 	private void createPanel() {
-		searchArea.setPreferredSize(new Dimension(200, 25));
+		searchField.setPreferredSize(new Dimension(200, 25));
 		setPreferredSize(new Dimension(500, 100));
-		searchArea.setBounds(10, 10, 300, 30);
-		add(getSearchArea());
+		searchField.setBounds(10, 10, 300, 30);
+		add(getSearchField());
 		searchButton.setBounds(320, 10, 200, 30);
 		searchButton.setForeground(Color.RED);
 		add(getSearchButton());
-		getAddWord().setBounds(520, 10, 200, 30);
-		add(getAddWord());
-		getShowAllWords().setBounds(720, 10, 200, 30);
-		add(getShowAllWords());
+		getAddButton().setBounds(520, 10, 200, 30);
+		add(getAddButton());
+		getAllWordsButton().setBounds(720, 10, 200, 30);
+		add(getAllWordsButton());
 	}
 
-	public JButton getAddWord() {
-		return addWord;
+	public JButton getAddButton() {
+		return addButton;
 	}
 
-	public JTextField getSearchArea() {
-		return searchArea;
+	public JTextField getSearchField() {
+		return searchField;
 	}
 
 	public JButton getSearchButton() {
 		return searchButton;
 	}
 
-	public JButton getRemoveButton() {
-		return getShowAllWords();
-	}
-
-	public JButton getShowAllWords() {
-		return showAllWords;
+	public JButton getAllWordsButton() {
+		return allWordsButton;
 	}
 }

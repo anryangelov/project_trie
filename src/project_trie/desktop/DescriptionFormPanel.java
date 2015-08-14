@@ -2,23 +2,20 @@ package project_trie.desktop;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import project_trie.trie.FileManager;
 
 public class DescriptionFormPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JTextArea description;
+	private DescriptionArea description;
 	private JButton submit;
 	private JTextField word;
 
 	public DescriptionFormPanel() {
-		description = new JTextArea();
+		description = new DescriptionArea();
 		submit = new JButton("submit");
 		word = new JTextField();
 		createForm();
@@ -29,10 +26,6 @@ public class DescriptionFormPanel extends JPanel {
 		submit.setToolTipText("Press the button to save the word");
 		getWord().setBounds(10, 20, 200, 32);
 		add(getWord());
-		getDescription().setBounds(10, 55, 700, 300);
-		description.setText("Enter description here...");
-		description.setLineWrap(true);
-		description.setWrapStyleWord(true);
 		add(getDescription());
 		submit.setBounds(620, 370, 90, 30);
 		add(getSubmit());
@@ -55,7 +48,7 @@ public class DescriptionFormPanel extends JPanel {
 		return submit;
 	}
 
-	public JTextArea getDescription() {
+	public DescriptionArea getDescription() {
 		return description;
 	}
 

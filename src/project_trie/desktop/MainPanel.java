@@ -13,17 +13,29 @@ import project_trie.trie.Trie;
 
 public class MainPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	static JPanel bottom = new JPanel();
-	static CardLayout cl = new CardLayout();
-	private FileManager fm = new FileManager();
-	private Trie dictionary = fm.getDictionary();
-	private DescriptionFormPanel descrPanel = new DescriptionFormPanel();
-	private MenuPanel menu = new MenuPanel(dictionary.list());
-	private TablePanel tabPanel = new TablePanel();
-	private JPanel wellcomePanel = new WelcomePanel();
+	static JPanel bottom;
+	static CardLayout cl;
+	private FileManager fm;
+	private Trie dictionary;
+	private DescriptionFormPanel descrPanel;
+	private MenuPanel menu;
+	private TablePanel tabPanel;
+	private JPanel wellcomePanel;
 
 	public MainPanel() {
 		setLayout(null);
+		bottom = new JPanel();
+		cl = new CardLayout();
+		fm = new FileManager();
+		dictionary = fm.getDictionary();
+		descrPanel = new DescriptionFormPanel();
+		menu = new MenuPanel(dictionary.list());
+		tabPanel = new TablePanel();
+		wellcomePanel = new WelcomePanel();
+		setupPanel();
+	}
+
+	public void setupPanel() {
 		bottom.setLayout(cl);
 		add(menu);
 		bottom.setBounds(0, 50, 1000, 800);
@@ -33,10 +45,10 @@ public class MainPanel extends JPanel {
 		menu.getSearchButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String word = menu.getSearchArea().getText();
+				String word = menu.getSearchField().getText();
 				if (!dictionary.has(word)) {
 					descrPanel.getWord().setText(word);
-					menu.getSearchArea().setText("");
+					menu.getSearchField().setText("");
 					cl.show(bottom, "descriptionForm");
 				} else {
 					tabPanel.removeTable();
@@ -44,11 +56,11 @@ public class MainPanel extends JPanel {
 					l.add(word);
 					tabPanel.addTable(new Table(l));
 					cl.show(bottom, "tablePanel");
-					menu.getSearchArea().setText("");
+					menu.getSearchField().setText("");
 				}
 			}
 		});
-		menu.getShowAllWords().addActionListener(new ActionListener() {
+		menu.getAllWordsButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tabPanel.removeLable();
@@ -59,12 +71,13 @@ public class MainPanel extends JPanel {
 				cl.show(bottom, "tablePanel");
 			}
 		});
-		menu.getAddWord().addActionListener(new ActionListener() {
+		menu.getAddButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cl.show(bottom, "descriptionForm");
 			}
 		});
 		add(bottom);
+
 	}
 }
