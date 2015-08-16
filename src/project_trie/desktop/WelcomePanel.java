@@ -1,5 +1,6 @@
 package project_trie.desktop;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -10,10 +11,10 @@ public class WelcomePanel extends JPanel {
 
 	public WelcomePanel() {
 		setLayout(null);
+		setBackground(Color.ORANGE);
 		JLabel label = new JLabel("Welcome");
-		label.setFont(new Font("Sherif", Font.BOLD, 20));
-		label.setBounds(430, 200, 200, 50);
+		label.setFont(new Font("Sherif", Font.BOLD, 30));
+		label.setBounds(550, 200, 200, 50);
 		add(label);
 	}
-
 }

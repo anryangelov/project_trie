@@ -7,27 +7,24 @@ import javax.swing.UIManager;
 
 public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private static final int WIDTH = 1270;
+	private static final int HEIGHT = 670;
+	private static final String TITLE = "Dictionary";
 
 	public Frame() throws ClassNotFoundException, IOException {
-		createFrame();
-	}
-
-	private void createFrame() throws ClassNotFoundException, IOException {
-//		try {
-//			UIManager.setLookAndFeel(UIManager
-//					.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		setSize(new Dimension(1000, 600));
-		setTitle("Dictionary");
+		// setDefaultLookAndFeelDecorated(true);
+		// try {
+		// UIManager.setLookAndFeel(UIManager
+		// .getCrossPlatformLookAndFeelClassName());
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		setSize(new Dimension(WIDTH, HEIGHT));
+		setTitle(TITLE);
 		add(new MainPanel());
-		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setVisible(true);
-		validate();
-        repaint();
-		//pack();
-		//setResizable(false);
+		setResizable(false);
 	}
 }

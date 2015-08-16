@@ -1,11 +1,14 @@
 package project_trie.desktop;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import project_trie.trie.FileManager;
@@ -30,7 +33,6 @@ public class MainPanel extends JPanel {
 		dictionary = fm.getDictionary();
 		descrPanel = new DescriptionFormPanel();
 		menu = new MenuPanel(dictionary.list());
-		tabPanel = new TablePanel();
 		wellcomePanel = new WelcomePanel();
 		setupPanel();
 	}
@@ -38,36 +40,52 @@ public class MainPanel extends JPanel {
 	public void setupPanel() {
 		bottom.setLayout(cl);
 		add(menu);
-		bottom.setBounds(0, 50, 1000, 800);
+		bottom.setBounds(0, 50, 1500, 800);
 		bottom.add(wellcomePanel, "welcome");
 		bottom.add(descrPanel, "descriptionForm");
-		bottom.add(tabPanel, "tablePanel");
 		menu.getSearchButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String word = menu.getSearchField().getText();
-				if (!dictionary.has(word)) {
-					descrPanel.getWord().setText(word);
+				if (menu.getSearchField().getText().length() > 0) {
+					tabPanel = new TablePanel();
+					bottom.add(tabPanel, "tablePanel");
+					String word = menu.getSearchField().getText();
+					tabPanel.removeComponent(tabPanel.getScrollPane());
+					tabPanel.removeComponent(tabPanel.getLabel());
+					tabPanel.removeComponent(tabPanel.getEditPanel());
+					revalidate();
+					if (!dictionary.has(word)) {
+						if (word.length() == 1) {
+							tabPanel.addTable(new Table(getWords(word)),true);
+							tabPanel.setPreferredSize(new Dimension(1500, 1000));
+							cl.show(bottom, "tablePanel");
+						} else {
+							descrPanel.getWord().setText(word);
+							cl.show(bottom, "descriptionForm");
+						}
+					} else {
+						List<String> l = new ArrayList<>(1);
+						l.add(word);
+						tabPanel.addTable(new Table(l),true);
+						cl.show(bottom, "tablePanel");
+					}
 					menu.getSearchField().setText("");
-					cl.show(bottom, "descriptionForm");
-				} else {
-					tabPanel.removeTable();
-					List<String> l = new ArrayList<>(1);
-					l.add(word);
-					tabPanel.addTable(new Table(l));
-					cl.show(bottom, "tablePanel");
-					menu.getSearchField().setText("");
+				}else{
+					JOptionPane.showMessageDialog(null,
+							"Please enter some word");
 				}
 			}
 		});
 		menu.getAllWordsButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabPanel.removeLable();
+				tabPanel = new TablePanel();
+				bottom.add(tabPanel, "tablePanel");
+				tabPanel.removeComponent(tabPanel.getLabel());
+				tabPanel.removeComponent(tabPanel.getScrollPane());
 				revalidate();
 				repaint();
-				tabPanel.removeTable();
-				tabPanel.addTable(new Table(dictionary.list()));
+				tabPanel.addTable(new Table(dictionary.list()),false);
 				cl.show(bottom, "tablePanel");
 			}
 		});
@@ -78,6 +96,15 @@ public class MainPanel extends JPanel {
 			}
 		});
 		add(bottom);
+	}
 
+	private List<String> getWords(String letter) {
+		List<String> wordsList = new ArrayList<>();
+		for (String words : FileManager.dataBase.list()) {
+			if (words.startsWith(letter)) {
+				wordsList.add(words);
+			}
+		}
+		return wordsList;
 	}
 }

@@ -11,18 +11,19 @@ import javax.swing.JTextField;
 
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JTextField searchField;
-	static JButton searchButton;
+	static JTextField searchField;
+	public static JButton searchButton;
 	private JButton addButton;
 	private JButton allWordsButton;
+	public static Autocomplete autoComplete;
 
 	public MenuPanel(List<String> keywords) {
-		setBounds(0, 0, 1000, 50);
+		setBounds(0, 0, 1500, 50);
 		searchField = new JTextField();
 		searchButton = new JButton("search");
 		addButton = new JButton("add word");
 		allWordsButton = new JButton("show all");
-		new Autocomplete(searchField, keywords);
+		autoComplete = new Autocomplete(searchField, keywords);
 		setBackground(Color.DARK_GRAY);
 		createPanel();
 	}

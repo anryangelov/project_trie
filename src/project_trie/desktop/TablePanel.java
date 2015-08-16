@@ -1,48 +1,61 @@
 package project_trie.desktop;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import project_trie.trie.FileManager;
 
 public class TablePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private int height;
 	private Table table;
 	private JButton edit;
 	private JButton remove;
 	private JButton viewDescription;
 	private JScrollPane scrollPane;
-	private JButton save;
-	private EditArea editPanel;
 	private DescriptionLable label;
+	private EditPanel editPanel;
 
 	public TablePanel() {
 		setLayout(null);
+		setBackground(Color.ORANGE);
+		setBounds(12, 70, 1300, 550);
+		edit = new JButton("edit");
+		viewDescription = new JButton("view");
 		setBackground(Color.WHITE);
-		setBounds(12, 70, 1000, 1000);
+		remove = new JButton("remove");
+		height = 500;
 	}
 
-	public void addTable(Table table) {
+	public void addTable(Table table, boolean setHeight) {
+		setBackground(Color.ORANGE);
 		this.table = table;
+		if (setHeight) {
+			height = (int) getTable().getPreferredSize().getHeight();
+		}
+		if (height > 500) {
+			height = 500;
+		}
 		scrollPane = new JScrollPane(this.table,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.getViewport().setBackground(Color.WHITE);
-		scrollPane.setBounds(5, 5, 527, 450);
+		scrollPane.setBounds(5, 10, 527, height + 22);
 		add(scrollPane);
-		save = new Button("save");
-		edit = new JButton("edit");
-		edit.setBounds(430, 470, 100, 30);
+		edit.setBounds(430, height + 40, 100, 30);
 		add(edit);
-		viewDescription = new JButton("view");
-		viewDescription.setBounds(230, 470, 100, 30);
+		viewDescription.setBounds(210, height + 40, 100, 30);
 		add(viewDescription);
-		remove = new JButton("remove");
-		remove.setBounds(330, 470, 100, 30);
+		remove.setBounds(320, height + 40, 100, 30);
 		add(remove);
 		fireEdit();
 		fireView();
@@ -53,15 +66,18 @@ public class TablePanel extends JPanel {
 		remove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeEditArea();
-				removeLable();
-				removeSave();
+				removeComponent(label);
+				removeComponent(editPanel);
 				revalidate();
 				repaint();
-				String key = table.getColumnValue(1);
-				table.removeRow();
-				FileManager.dictionary.remove(key);
-				FileManager.saveChanges();
+				if (table.isRowSelected()) {
+					String key = table.getColumnValue(1);
+					table.removeRow();
+					FileManager.dataBase.remove(key);
+					FileManager.saveChanges();
+					MenuPanel.autoComplete
+							.updateAutocomplete(FileManager.dataBase.list());
+				}
 			}
 		});
 	}
@@ -70,37 +86,38 @@ public class TablePanel extends JPanel {
 		edit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeLable();
-				editPanel = new EditArea();
-				add(editPanel);
-				editPanel.setVisible(true);
-				editPanel.setText(table.getColumnValue(2));
-				save.setBounds(840, 420, 100, 30);
-				fireSave();
-				add(save);
-				revalidate();
-				repaint();
+				removeComponent(label);
+				removeComponent(editPanel);
+				if (table.isRowSelected()) {
+					editPanel = new EditPanel(table.getColumnValue(2));
+					add(editPanel);
+					fireSave();
+					revalidate();
+					repaint();
+				}
 			}
 		});
 	}
 
 	public void fireSave() {
-		save.addActionListener(new ActionListener() {
+		editPanel.getSaveButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String key = table.getColumnValue(1);
-				String value = editPanel.getText();
+				String value = editPanel.getEditArea().getText();
 				if (value.length() > 1100) {
 					JOptionPane.showMessageDialog(null,
-							"reduce text description");
+							"reduce text description with "
+									+ (value.length() - 1100) + " symbols");
 				} else {
+					removeComponent(editPanel);
+					revalidate();
+					repaint();
 					if (key != null) {
-						FileManager.dictionary.update(key, value);
+						FileManager.dataBase.update(key, value);
 						FileManager.saveChanges();
 						table.setColumnValue(value, 2);
 						table.setColumnValue(false, 3);
-						editPanel.setVisible(false);
-						remove(save);
 					}
 				}
 			}
@@ -111,40 +128,37 @@ public class TablePanel extends JPanel {
 		viewDescription.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeLable();
-				removeSave();
-				removeEditArea();
-				String text = table.getColumnValue(2);
-				System.out.println(text);
-				label = new DescriptionLable(text);
-				add(label);
-				revalidate();
-				repaint();
+				if (table.isRowSelected()) {
+					removeComponent(label);
+					removeComponent(editPanel);
+					label = new DescriptionLable(table.getColumnValue(2),table.getColumnValue(1));
+					add(label);
+					revalidate();
+					repaint();
+				}
 			}
 		});
 	}
 
-	public void removeLable() {
-		if (label != null) {
-			remove(label);
+	public void removeComponent(Component component) {
+		if (component != null) {
+			remove(component);
 		}
 	}
 
-	public void removeSave() {
-		if (save != null) {
-			remove(save);
-		}
+	public DescriptionLable getLabel() {
+		return label;
 	}
 
-	public void removeEditArea() {
-		if (editPanel != null) {
-			remove(editPanel);
-		}
+	public EditPanel getEditPanel() {
+		return editPanel;
 	}
 
-	public void removeTable() {
-		if (scrollPane != null) {
-			super.remove(scrollPane);
-		}
+	public Table getTable() {
+		return table;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
 	}
 }

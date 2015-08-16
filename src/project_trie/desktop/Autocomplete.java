@@ -14,71 +14,80 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class Autocomplete {
-	List<String> items;
+	private JTextField input;
+	private List<String> dictionary;
 	private DefaultComboBoxModel<String> model;
 	private JComboBox<String> combo;
 
-	public Autocomplete(JTextField txtInput, List<String> dictionary) {
-		setupAutoComplete(txtInput, dictionary);
-	}
-
-	public void setupAutoComplete(JTextField txtInput, List<String> dictionary) {
+	public Autocomplete(JTextField input, List<String> dictionary) {
+		this.input = input;
+		this.dictionary = dictionary;
 		model = new DefaultComboBoxModel<>();
 		combo = new JComboBox<String>(model);
 		combo.setPreferredSize(new Dimension(combo.getPreferredSize().width, 0));
-		for (String word : dictionary) {
-			model.addElement(word);
-		}
-		combo.setSelectedItem(null);
-		txtInput.addKeyListener(new KeyAdapter() {
+		input.setLayout(new BorderLayout());
+		input.add(combo, BorderLayout.SOUTH);
+		setupAutoComplete(input, dictionary);
+	}
+
+	public void setupAutoComplete(JTextField input, List<String> dictionary) {
+		input.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(KeyEvent event) {
 				combo.putClientProperty("", true);
-				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						|| e.getKeyCode() == KeyEvent.VK_UP
-						|| e.getKeyCode() == KeyEvent.VK_DOWN) {
-					e.setSource(combo);
-					combo.dispatchEvent(e);
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if (combo.getSelectedItem() != null) {
-							combo.addItem(txtInput.getText());
-							txtInput.setText(combo.getSelectedItem().toString());
-							MenuPanel.searchButton.doClick();
-							combo.setPopupVisible(false);
-						}
+				int keyCode = event.getKeyCode();
+				if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN) {
+					combo.dispatchEvent(event);
+				}
+				if (keyCode == KeyEvent.VK_ENTER
+						&& input.getText().length() > 0) {
+					if (combo.getSelectedItem() != null) {
+						combo.addItem(input.getText());
+						input.setText(combo.getSelectedItem().toString());
+						combo.hidePopup();
 					}
+					MenuPanel.searchButton.doClick();
 				}
 			}
 		});
-		txtInput.getDocument().addDocumentListener(new DocumentListener() {
+		input.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
-				updateList();
+				updateCombo();
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				updateList();
+				updateCombo();
 			}
 
 			public void changedUpdate(DocumentEvent e) {
-				updateList();
+				updateCombo();
 			}
 
-			private void updateList() {
-				combo.putClientProperty("", true);
-				model.removeAllElements();
-				String input = txtInput.getText();
-				if (!input.isEmpty()) {
-					for (String word : dictionary) {
-						if (word.toLowerCase().startsWith(input.toLowerCase())) {
-							model.addElement(word);
-						}
-					}
-					model.addElement(input);
-				}
-				combo.setPopupVisible(model.getSize() > 0);
-			}
 		});
-		txtInput.setLayout(new BorderLayout());
-		txtInput.add(combo, BorderLayout.SOUTH);
+	}
+
+	public void updateAutocomplete(List<String> dictionary) {
+		model.removeAllElements();
+		this.dictionary = dictionary;
+	}
+
+	private void updateCombo() {
+		combo.putClientProperty("", true);
+		model.removeAllElements();
+		String inputedText = input.getText();
+		if (input.getText().length() == 1) {
+			model.addElement(inputedText);
+		}
+		if (!inputedText.isEmpty()) {
+			for (String word : dictionary) {
+				if (word.toLowerCase().startsWith(inputedText.toLowerCase())) {
+					model.addElement(word);
+				}
+			}
+		}
+		combo.setPopupVisible(model.getSize() > 0);
+		if (input.getText().length() == 0) {
+			combo.hidePopup();
+		}
 	}
 }
