@@ -17,10 +17,10 @@ public class EditPanel extends JPanel {
 
 	public EditPanel(String text) {
 		setLayout(null);
-		setBounds(540, 10, 700, 600);
+		setBounds(540, 10, 700, 540);
 		setBackground(Color.ORANGE);
 		editArea = new JTextArea();
-		editArea.setBackground(Color.WHITE);
+		//editArea.setBackground(Color.WHITE);
 		editArea.setText(text);
 		editArea.setLineWrap(true);
 		editArea.setWrapStyleWord(true);

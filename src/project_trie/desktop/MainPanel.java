@@ -56,7 +56,7 @@ public class MainPanel extends JPanel {
 					revalidate();
 					if (!dictionary.has(word)) {
 						if (word.length() == 1) {
-							tabPanel.addTable(new Table(getWords(word)),true);
+							tabPanel.addTable(new Table(getWords(word),1),true);
 							tabPanel.setPreferredSize(new Dimension(1500, 1000));
 							cl.show(bottom, "tablePanel");
 						} else {
@@ -66,7 +66,7 @@ public class MainPanel extends JPanel {
 					} else {
 						List<String> l = new ArrayList<>(1);
 						l.add(word);
-						tabPanel.addTable(new Table(l),true);
+						tabPanel.addTable(new Table(l,1),true);
 						cl.show(bottom, "tablePanel");
 					}
 					menu.getSearchField().setText("");
@@ -76,6 +76,7 @@ public class MainPanel extends JPanel {
 				}
 			}
 		});
+		bottom.add(new TablePanelTest(dictionary.list()),"tpt");
 		menu.getAllWordsButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -85,8 +86,8 @@ public class MainPanel extends JPanel {
 				tabPanel.removeComponent(tabPanel.getScrollPane());
 				revalidate();
 				repaint();
-				tabPanel.addTable(new Table(dictionary.list()),false);
-				cl.show(bottom, "tablePanel");
+				tabPanel.addTable(new Table(dictionary.list(),0),false);
+				cl.show(bottom, "tpt");
 			}
 		});
 		menu.getAddButton().addActionListener(new ActionListener() {

@@ -26,6 +26,10 @@ public class TablePanel extends JPanel {
 	private DescriptionLable label;
 	private EditPanel editPanel;
 
+	public TablePanel(Table tab) {
+
+	}
+
 	public TablePanel() {
 		setLayout(null);
 		setBackground(Color.ORANGE);
@@ -58,7 +62,7 @@ public class TablePanel extends JPanel {
 		remove.setBounds(320, height + 40, 100, 30);
 		add(remove);
 		fireEdit();
-		fireView();
+		fireView(this.table);
 		fireRemove();
 	}
 
@@ -124,14 +128,15 @@ public class TablePanel extends JPanel {
 		});
 	}
 
-	public void fireView() {
+	public void fireView(Table table) {
 		viewDescription.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (table.isRowSelected()) {
 					removeComponent(label);
 					removeComponent(editPanel);
-					label = new DescriptionLable(table.getColumnValue(2),table.getColumnValue(1));
+					label = new DescriptionLable(table.getColumnValue(2), table
+							.getColumnValue(1));
 					add(label);
 					revalidate();
 					repaint();

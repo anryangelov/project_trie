@@ -21,7 +21,7 @@ public class Table extends JTable {
 	private static final long serialVersionUID = 1L;
 	private DefaultTableModel tableModel;
 
-	public Table(List<String> allWords) {
+	public Table(List<String> allWords,int size) {
 		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -71,7 +71,7 @@ public class Table extends JTable {
 		setModel(tableModel);
 		getColumnModel().getColumn(0).setPreferredWidth(40);
 		for (int i = 0; i < allWords.size(); i++) {
-			tableModel.addRow(new Object[] { i + 1, allWords.get(i),
+			tableModel.addRow(new Object[] { size++, allWords.get(i),
 					FileManager.dataBase.get(allWords.get(i)), false });
 			setRowHeight(i, 40);
 		}
