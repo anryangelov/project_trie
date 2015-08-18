@@ -1,16 +1,12 @@
 package project_trie.desktop;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
@@ -34,6 +30,7 @@ public class MainPanel extends JPanel {
 		descrPanel = new DescriptionFormPanel();
 		menu = new MenuPanel(dictionary.list());
 		wellcomePanel = new WelcomePanel();
+		tabPanel = new TablePanel();
 		setupPanel();
 	}
 
@@ -43,22 +40,19 @@ public class MainPanel extends JPanel {
 		bottom.setBounds(0, 50, 1500, 800);
 		bottom.add(wellcomePanel, "welcome");
 		bottom.add(descrPanel, "descriptionForm");
+		
 		menu.getSearchButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (menu.getSearchField().getText().length() > 0) {
-					tabPanel = new TablePanel();
-					bottom.add(tabPanel, "tablePanel");
 					String word = menu.getSearchField().getText();
-					tabPanel.removeComponent(tabPanel.getScrollPane());
 					tabPanel.removeComponent(tabPanel.getLabel());
 					tabPanel.removeComponent(tabPanel.getEditPanel());
 					revalidate();
 					if (!dictionary.has(word)) {
 						if (word.length() == 1) {
-							tabPanel.addTable(new Table(getWords(word),1),true);
-							tabPanel.setPreferredSize(new Dimension(1500, 1000));
-							cl.show(bottom, "tablePanel");
+							bottom.add(new TablePanelTest(getWords(word)), "tpt");
+							cl.show(bottom, "tpt");
 						} else {
 							descrPanel.getWord().setText(word);
 							cl.show(bottom, "descriptionForm");
@@ -66,27 +60,20 @@ public class MainPanel extends JPanel {
 					} else {
 						List<String> l = new ArrayList<>(1);
 						l.add(word);
-						tabPanel.addTable(new Table(l,1),true);
-						cl.show(bottom, "tablePanel");
+						bottom.add(new TablePanelTest(l), "tpt");
+						cl.show(bottom, "tpt");
 					}
 					menu.getSearchField().setText("");
-				}else{
+				} else {
 					JOptionPane.showMessageDialog(null,
 							"Please enter some word");
 				}
 			}
 		});
-		bottom.add(new TablePanelTest(dictionary.list()),"tpt");
 		menu.getAllWordsButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabPanel = new TablePanel();
-				bottom.add(tabPanel, "tablePanel");
-				tabPanel.removeComponent(tabPanel.getLabel());
-				tabPanel.removeComponent(tabPanel.getScrollPane());
-				revalidate();
-				repaint();
-				tabPanel.addTable(new Table(dictionary.list(),0),false);
+				bottom.add(new TablePanelTest(dictionary.list()), "tpt");
 				cl.show(bottom, "tpt");
 			}
 		});

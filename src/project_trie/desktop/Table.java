@@ -75,7 +75,7 @@ public class Table extends JTable {
 					FileManager.dataBase.get(allWords.get(i)), false });
 			setRowHeight(i, 40);
 		}
-		setToolTipText((String) getValueAt(0, 1));
+		//setToolTipText((String) getValueAt(0, 1));
 
 		getColumnModel().getColumn(1).setPreferredWidth(200);
 		getColumnModel().getColumn(2).setPreferredWidth(250);
