@@ -50,7 +50,7 @@ public class DescriptionFormPanel extends JPanel {
 					String value = word.getText();
 					FileManager.dataBase.add(value, description.getText());
 					FileManager.saveChanges();
-					JOptionPane.showMessageDialog(null, value
+					new MessageDialog("", value
 							+ " has been added successfully");
 					word.setText("");
 					description.setText("Enter description here..");

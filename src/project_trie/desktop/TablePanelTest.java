@@ -18,6 +18,7 @@ public class TablePanelTest extends JPanel {
 	private JButton prev;
 	private int counter = 0;
 	private int listSize;
+	private int size;
 
 	public TablePanelTest(List<String> l) {
 		setLayout(null);
@@ -28,6 +29,7 @@ public class TablePanelTest extends JPanel {
 		next = new JButton("next");
 		prev = new JButton("prev");
 		List<List<String>> list = splitList(l);
+		size = list.size();
 		jp.setLayout(null);
 		bottom.setLayout(cl);
 		setBackground(Color.ORANGE);
@@ -46,6 +48,11 @@ public class TablePanelTest extends JPanel {
 			table.setBounds(0, 50, 527, 370);
 			TablePanel tablePanel = new TablePanel();
 			tablePanel.addTable(table, true);
+			if (tablePanel.getTable().getRowCount() == 1) {
+				remove(tablePanel);
+				revalidate();
+				repaint();
+			}
 			bottom.add(tablePanel, i + 1 + "");
 			a += list.get(i).size();
 		}
@@ -61,7 +68,7 @@ public class TablePanelTest extends JPanel {
 		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (counter < listSize) {
+				if (counter < size) {
 					counter++;
 					cl.show(bottom, counter + "");
 				}
@@ -73,7 +80,7 @@ public class TablePanelTest extends JPanel {
 		prev.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (counter > 0) {
+				if (counter > 1) {
 					counter--;
 					cl.show(bottom, counter + "");
 				}
@@ -92,8 +99,7 @@ public class TablePanelTest extends JPanel {
 				a = -1;
 			}
 		}
-		if (li.size() < 10) {
-
+		if (li.size() < 10 && li.size() > 0) {
 			list.add(li);
 		}
 		return list;

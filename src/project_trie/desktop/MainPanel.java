@@ -1,12 +1,21 @@
 package project_trie.desktop;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
@@ -40,7 +49,6 @@ public class MainPanel extends JPanel {
 		bottom.setBounds(0, 50, 1500, 800);
 		bottom.add(wellcomePanel, "welcome");
 		bottom.add(descrPanel, "descriptionForm");
-		
 		menu.getSearchButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -51,11 +59,20 @@ public class MainPanel extends JPanel {
 					revalidate();
 					if (!dictionary.has(word)) {
 						if (word.length() == 1) {
-							bottom.add(new TablePanelTest(getWords(word)), "tpt");
-							cl.show(bottom, "tpt");
+							List<String> words = getWords(word);
+							if (!words.isEmpty()) {
+								bottom.add(new TablePanelTest(getWords(word)),
+										"tpt");
+								cl.show(bottom, "tpt");
+							} else {
+								new MessageDialog("", "      Invalid word");
+							}
 						} else {
-							descrPanel.getWord().setText(word);
-							cl.show(bottom, "descriptionForm");
+//							MessageDialog md = new MessageDialog();
+//							if (md.isMessageAnswerPositive("Would You Like to Save this word?")) {
+								descrPanel.getWord().setText(word);
+								cl.show(bottom, "descriptionForm");
+							//}
 						}
 					} else {
 						List<String> l = new ArrayList<>(1);
@@ -65,8 +82,7 @@ public class MainPanel extends JPanel {
 					}
 					menu.getSearchField().setText("");
 				} else {
-					JOptionPane.showMessageDialog(null,
-							"Please enter some word");
+					new MessageDialog("", "Please enter some word");
 				}
 			}
 		});

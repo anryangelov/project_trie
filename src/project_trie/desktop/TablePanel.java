@@ -26,10 +26,6 @@ public class TablePanel extends JPanel {
 	private DescriptionLable label;
 	private EditPanel editPanel;
 
-	public TablePanel(Table tab) {
-
-	}
-
 	public TablePanel() {
 		setLayout(null);
 		setBackground(Color.ORANGE);
@@ -82,7 +78,13 @@ public class TablePanel extends JPanel {
 					MenuPanel.autoComplete
 							.updateAutocomplete(FileManager.dataBase.list());
 				}
+				if (table.getRowCount() == 1) {
+					removeComponent(table);
+					revalidate();
+					repaint();
+				}
 			}
+
 		});
 	}
 
@@ -93,7 +95,7 @@ public class TablePanel extends JPanel {
 				removeComponent(label);
 				removeComponent(editPanel);
 				if (table.isRowSelected()) {
-					editPanel = new EditPanel(table.getColumnValue(2));
+					editPanel = new EditPanel(table.getColumnValue(1),table.getColumnValue(2));
 					add(editPanel);
 					fireSave();
 					revalidate();
@@ -108,20 +110,28 @@ public class TablePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String key = table.getColumnValue(1);
+				String keyFromEditPAnel = editPanel.getWordField().getText();
 				String value = editPanel.getEditArea().getText();
 				if (value.length() > 1100) {
-					JOptionPane.showMessageDialog(null,
-							"reduce text description with "
-									+ (value.length() - 1100) + " symbols");
+					new MessageDialog("", "reduce text description with "
+							+ (value.length() - 1100) + " symbols");
 				} else {
 					removeComponent(editPanel);
 					revalidate();
 					repaint();
 					if (key != null) {
-						FileManager.dataBase.update(key, value);
-						FileManager.saveChanges();
-						table.setColumnValue(value, 2);
+						if (keyFromEditPAnel.equals(key)) {
+							FileManager.dataBase.update(key, value);
+							table.setColumnValue(value, 2);
+						}else {							
+							FileManager.dataBase.remove(key);
+							FileManager.dataBase.add(keyFromEditPAnel, value);
+							table.setColumnValue(keyFromEditPAnel, 1);
+							table.setColumnValue(value, 2);
+							Autocomplete.updateAutocomplete(FileManager.dataBase.list());
+						}
 						table.setColumnValue(false, 3);
+						FileManager.saveChanges();
 					}
 				}
 			}

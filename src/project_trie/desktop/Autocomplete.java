@@ -15,13 +15,13 @@ import javax.swing.event.DocumentListener;
 
 public class Autocomplete {
 	private JTextField input;
-	private List<String> dictionary;
-	private DefaultComboBoxModel<String> model;
+	private static List<String> dictionary;
+	private static DefaultComboBoxModel<String> model;
 	private JComboBox<String> combo;
 
 	public Autocomplete(JTextField input, List<String> dictionary) {
 		this.input = input;
-		this.dictionary = dictionary;
+		Autocomplete.dictionary = dictionary;
 		model = new DefaultComboBoxModel<>();
 		combo = new JComboBox<String>(model);
 		combo.setPreferredSize(new Dimension(combo.getPreferredSize().width, 0));
@@ -41,12 +41,10 @@ public class Autocomplete {
 				}
 				if (keyCode == KeyEvent.VK_ENTER
 						&& input.getText().length() > 0) {
-					if (combo.getSelectedItem() != null) {
 						combo.addItem(input.getText());
 						input.setText(combo.getSelectedItem().toString());
 						combo.hidePopup();
-					}
-					MenuPanel.searchButton.doClick();
+						MenuPanel.searchButton.doClick();
 				}
 			}
 		});
@@ -66,9 +64,9 @@ public class Autocomplete {
 		});
 	}
 
-	public void updateAutocomplete(List<String> dictionary) {
+	public static void updateAutocomplete(List<String> dict) {
 		model.removeAllElements();
-		this.dictionary = dictionary;
+		dictionary = dict;
 	}
 
 	private void updateCombo() {
