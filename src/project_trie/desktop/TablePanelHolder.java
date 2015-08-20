@@ -9,18 +9,24 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class TablePanelTest extends JPanel {
+/*
+ * this class is extension of TablePanel class
+ * The Idea is to remove scrollPane's and to
+ * spread the words in separate tables and 
+ * switch between them by pressing next and prev buttons
+ */
+public class TablePanelHolder extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JPanel bottom;
 	private JPanel jp;
 	private CardLayout cl;
 	private JButton next;
 	private JButton prev;
-	private int counter = 0;
+	private int counter = 1;
 	private int listSize;
 	private int size;
 
-	public TablePanelTest(List<String> l) {
+	public TablePanelHolder(List<String> l) {
 		setLayout(null);
 		listSize = l.size();
 		bottom = new JPanel();
@@ -40,6 +46,10 @@ public class TablePanelTest extends JPanel {
 		fireNext();
 	}
 
+	/*
+	 * createPanels method use splitList method to create n number of panels
+	 * using TablePanel class This is the main idea of this class
+	 */
 	public void createPanels(List<List<String>> list) {
 		int a = 1;
 		for (int i = 0; i < list.size(); i++) {
@@ -57,8 +67,8 @@ public class TablePanelTest extends JPanel {
 			a += list.get(i).size();
 		}
 		if (listSize > 10) {
-			prev.setBounds(20, 20, 70, 23);
-			next.setBounds(450, 20, 70, 23);
+			prev.setBounds(5, 20, 70, 23);
+			next.setBounds(460, 20, 70, 23);
 			add(next);
 			add(prev);
 		}
@@ -88,6 +98,10 @@ public class TablePanelTest extends JPanel {
 		});
 	}
 
+	/*
+	 * splitList method split all words in dictionary in separated list's with
+	 * capacity 10 words.Actually this is the size of the Table
+	 */
 	private List<List<String>> splitList(List<String> l) {
 		List<String> li = new ArrayList<>();
 		List<List<String>> list = new ArrayList<>();

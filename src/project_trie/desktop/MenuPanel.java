@@ -9,21 +9,27 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/*
+ * Location of this panel is in the upper part of the window
+ * Holds searching area and buttons "search","add word" and 
+ * "show all"...Logic of the buttons is located in MainPanel class
+ * 
+ */
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	static JTextField searchField;
+	public static JTextField searchField;
 	public static JButton searchButton;
 	private JButton addButton;
 	private JButton allWordsButton;
 	public static Autocomplete autoComplete;
 
-	public MenuPanel(List<String> keywords) {
+	public MenuPanel(List<String> allWords) {
 		setBounds(0, 0, 1500, 50);
 		searchField = new JTextField();
 		searchButton = new JButton("search");
 		addButton = new JButton("add word");
 		allWordsButton = new JButton("show all");
-		autoComplete = new Autocomplete(searchField, keywords);
+		autoComplete = new Autocomplete(searchField, allWords);
 		setBackground(Color.DARK_GRAY);
 		createPanel();
 	}

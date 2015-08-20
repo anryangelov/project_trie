@@ -25,6 +25,7 @@ public class TablePanel extends JPanel {
 	private JScrollPane scrollPane;
 	private DescriptionLable label;
 	private EditPanel editPanel;
+	private TablePanel tp = this;
 
 	public TablePanel() {
 		setLayout(null);
@@ -75,13 +76,10 @@ public class TablePanel extends JPanel {
 					table.removeRow();
 					FileManager.dataBase.remove(key);
 					FileManager.saveChanges();
-					MenuPanel.autoComplete
-							.updateAutocomplete(FileManager.dataBase.list());
+					Autocomplete.updateAutocomplete(FileManager.dataBase.list());
 				}
-				if (table.getRowCount() == 1) {
-					removeComponent(table);
-					revalidate();
-					repaint();
+				if (table.getRowCount() == 0) {
+					MainPanel.cl.first(MainPanel.bottom);
 				}
 			}
 
@@ -95,7 +93,8 @@ public class TablePanel extends JPanel {
 				removeComponent(label);
 				removeComponent(editPanel);
 				if (table.isRowSelected()) {
-					editPanel = new EditPanel(table.getColumnValue(1),table.getColumnValue(2));
+					editPanel = new EditPanel(table.getColumnValue(1), table
+							.getColumnValue(2));
 					add(editPanel);
 					fireSave();
 					revalidate();
@@ -106,6 +105,7 @@ public class TablePanel extends JPanel {
 	}
 
 	public void fireSave() {
+		new ButtonAction(editPanel.getSaveButton(), editPanel.getEditArea());
 		editPanel.getSaveButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -123,12 +123,14 @@ public class TablePanel extends JPanel {
 						if (keyFromEditPAnel.equals(key)) {
 							FileManager.dataBase.update(key, value);
 							table.setColumnValue(value, 2);
-						}else {							
+						} else {
 							FileManager.dataBase.remove(key);
 							FileManager.dataBase.add(keyFromEditPAnel, value);
 							table.setColumnValue(keyFromEditPAnel, 1);
 							table.setColumnValue(value, 2);
-							Autocomplete.updateAutocomplete(FileManager.dataBase.list());
+							Autocomplete
+									.updateAutocomplete(FileManager.dataBase
+											.list());
 						}
 						table.setColumnValue(false, 3);
 						FileManager.saveChanges();

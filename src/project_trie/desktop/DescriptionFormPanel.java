@@ -3,6 +3,8 @@ package project_trie.desktop;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -42,6 +44,7 @@ public class DescriptionFormPanel extends JPanel {
 	}
 
 	public void fireSubmit() {
+		new ButtonAction(submit, description);
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -55,8 +58,7 @@ public class DescriptionFormPanel extends JPanel {
 					word.setText("");
 					description.setText("Enter description here..");
 					MainPanel.cl.first(MainPanel.bottom);
-					MenuPanel.autoComplete
-							.updateAutocomplete(FileManager.dataBase.list());
+					Autocomplete.updateAutocomplete(FileManager.dataBase.list());
 				}
 			}
 		});

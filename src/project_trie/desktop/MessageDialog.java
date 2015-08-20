@@ -9,13 +9,12 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-
+/*
+ * This class create automatically closing window
+ * Timer class set the period;
+ */
 public class MessageDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
-
-	public MessageDialog() {
-
-	}
 
 	public MessageDialog(String word, String message) {
 		setPreferredSize(new Dimension(340, 100));
@@ -28,13 +27,11 @@ public class MessageDialog extends JFrame {
 		}
 		JDialog dialog = pane.createDialog(this, "Title");
 		dialog.setLocationRelativeTo(null);
-		Timer timer = new Timer(2000, new ActionListener() {
+		Timer timer = new Timer(3000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dialog.setVisible(false);
-				dialog.dispose();
 			}
 		});
-		timer.setRepeats(false);
 		timer.start();
 		dialog.setVisible(true);
 	}

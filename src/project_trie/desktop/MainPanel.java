@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
 						if (word.length() == 1) {
 							List<String> words = getWords(word);
 							if (!words.isEmpty()) {
-								bottom.add(new TablePanelTest(getWords(word)),
+								bottom.add(new TablePanelHolder(getWords(word)),
 										"tpt");
 								cl.show(bottom, "tpt");
 							} else {
@@ -77,7 +77,7 @@ public class MainPanel extends JPanel {
 					} else {
 						List<String> l = new ArrayList<>(1);
 						l.add(word);
-						bottom.add(new TablePanelTest(l), "tpt");
+						bottom.add(new TablePanelHolder(l), "tpt");
 						cl.show(bottom, "tpt");
 					}
 					menu.getSearchField().setText("");
@@ -89,7 +89,7 @@ public class MainPanel extends JPanel {
 		menu.getAllWordsButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bottom.add(new TablePanelTest(dictionary.list()), "tpt");
+				bottom.add(new TablePanelHolder(dictionary.list()), "tpt");
 				cl.show(bottom, "tpt");
 			}
 		});
@@ -110,5 +110,9 @@ public class MainPanel extends JPanel {
 			}
 		}
 		return wordsList;
+	}
+
+	public JPanel getWellcomePanel() {
+		return wellcomePanel;
 	}
 }
