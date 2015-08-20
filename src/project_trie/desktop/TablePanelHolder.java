@@ -2,10 +2,12 @@ package project_trie.desktop;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -24,7 +26,7 @@ public class TablePanelHolder extends JPanel {
 	private JButton prev;
 	private int counter = 1;
 	private int listSize;
-	private int size;
+	private int pagesCount;
 
 	public TablePanelHolder(List<String> l) {
 		setLayout(null);
@@ -33,9 +35,10 @@ public class TablePanelHolder extends JPanel {
 		jp = new JPanel();
 		cl = new CardLayout();
 		next = new JButton("next");
-		prev = new JButton("prev");
+		prev = new JButton("back");
+		prev.setVisible(false);
 		List<List<String>> list = splitList(l);
-		size = list.size();
+		pagesCount = list.size();
 		jp.setLayout(null);
 		bottom.setLayout(cl);
 		setBackground(Color.ORANGE);
@@ -58,15 +61,15 @@ public class TablePanelHolder extends JPanel {
 			table.setBounds(0, 50, 527, 370);
 			TablePanel tablePanel = new TablePanel();
 			tablePanel.addTable(table, true);
-			if (tablePanel.getTable().getRowCount() == 1) {
-				remove(tablePanel);
-				revalidate();
-				repaint();
-			}
+			// if (tablePanel.getTable().getRowCount() == 1) {
+			// remove(tablePanel);
+			// revalidate();
+			// repaint();
+			// }
 			bottom.add(tablePanel, i + 1 + "");
 			a += list.get(i).size();
 		}
-		if (listSize > 10) {
+		if (listSize > 11) {
 			prev.setBounds(5, 20, 70, 23);
 			next.setBounds(460, 20, 70, 23);
 			add(next);
@@ -78,10 +81,14 @@ public class TablePanelHolder extends JPanel {
 		next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (counter < size) {
-					counter++;
-					cl.show(bottom, counter + "");
+				counter++;
+				if (counter == pagesCount) {
+					next.setVisible(false);
 				}
+				if (counter > 1) {
+					prev.setVisible(true);
+				}
+				cl.next(bottom);
 			}
 		});
 	}
@@ -90,10 +97,14 @@ public class TablePanelHolder extends JPanel {
 		prev.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (counter > 1) {
-					counter--;
-					cl.show(bottom, counter + "");
+				counter--;
+				if (counter < pagesCount) {
+					next.setVisible(true);
 				}
+				if (counter == 1) {
+					prev.setVisible(false);
+				}
+				cl.previous(bottom);
 			}
 		});
 	}
@@ -117,5 +128,14 @@ public class TablePanelHolder extends JPanel {
 			list.add(li);
 		}
 		return list;
+	}
+
+	private String getCardName() {
+		for (Component comp : bottom.getComponents()) {
+			if (comp.isVisible()) {
+				return comp.getName();
+			}
+		}
+		return null;
 	}
 }
