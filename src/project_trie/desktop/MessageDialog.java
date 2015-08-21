@@ -1,5 +1,6 @@
 package project_trie.desktop;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +10,16 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+
 /*
  * This class create automatically closing window
  * Timer class set the period;
  */
 public class MessageDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
+
+	public MessageDialog() {
+	}
 
 	public MessageDialog(String word, String message) {
 		setPreferredSize(new Dimension(340, 100));

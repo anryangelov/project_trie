@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
@@ -22,10 +24,9 @@ public class TablePanel extends JPanel {
 	private JButton viewDescription;
 	private DescriptionLable label;
 	private EditPanel editPanel;
-	private TablePanel tp;
+	private JScrollPane sp;
 
 	public TablePanel() {
-		tp = this;
 		setLayout(null);
 		setBackground(Color.ORANGE);
 		setBounds(12, 70, 1300, 550);
@@ -45,8 +46,11 @@ public class TablePanel extends JPanel {
 		if (height > 500) {
 			height = 500;
 		}
-		table.setBounds(5, 10, 527, height + 22);
-		add(table);
+		sp = new JScrollPane(this.table);
+		sp.getViewport().setBackground(Color.ORANGE);
+		sp.setBorder(BorderFactory.createEmptyBorder());
+		sp.setBounds(5, 10, 527, height + 22);
+		add(sp);
 		edit.setBounds(430, height + 40, 100, 30);
 		add(edit);
 		viewDescription.setBounds(210, height + 40, 100, 30);
@@ -54,7 +58,7 @@ public class TablePanel extends JPanel {
 		remove.setBounds(320, height + 40, 100, 30);
 		add(remove);
 		fireEdit();
-		fireView(this.table);
+		fireView();
 		fireRemove();
 	}
 
@@ -62,30 +66,28 @@ public class TablePanel extends JPanel {
 		remove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeComponent(label);
-				removeComponent(editPanel);
-				revalidate();
-				repaint();
+				String key = table.getColumnValue(1);
+				if (new MessageDialog()
+						.isMessageAnswerPositive("Are you sure you want to delete "
+								+ key)) {
+					table.removeRow();
+					if (table.getRowCount() != 0) {
+						FileManager.dataBase.remove(key);
+						FileManager.saveChanges();
+						Autocomplete.updateAutocomplete(FileManager.dataBase
+								.list());
+						removeAll();
+					//	MainPanel.bottom.r
+						List<String> tableData = getTableData(table).list();
+						addTable(new Table(tableData, 1), true);
+						revalidate();
+						repaint();
+					} else {
+						TablePanelHolder.cl.previous(TablePanelHolder.bottom);
 
-				if (table.isRowSelected()) {
-					String key = table.getColumnValue(1);
-					//table.removeRow();
-					FileManager.dataBase.remove(key);
-					FileManager.saveChanges();
-					Autocomplete.updateAutocomplete(FileManager.dataBase.list());
-					removeComponent(tp);
-					
-					//List<String> l = getTableData(table).list();
-					TablePanel p = new TablePanel();
-					p.addTable(new Table(getTableData(table).list(), 1), false);
-					revalidate();
-					repaint();
-				}
-				if (table.getRowCount() == 0) {
-					MainPanel.cl.first(MainPanel.bottom);
+					}
 				}
 			}
-
 		});
 	}
 
@@ -116,9 +118,6 @@ public class TablePanel extends JPanel {
 				String keyFromEditPAnel = editPanel.getWordField().getText();
 				String value = editPanel.getEditArea().getText();
 				if (value.length() > 1100) {
-					new MessageDialog("", "reduce text description with "
-							+ (value.length() - 1100) + " symbols");
-				} else {
 					removeComponent(editPanel);
 					revalidate();
 					repaint();
@@ -137,24 +136,31 @@ public class TablePanel extends JPanel {
 						}
 						table.setColumnValue(false, 3);
 						FileManager.saveChanges();
+					} else {
+						new MessageDialog("", "reduce text description with "
+								+ (value.length() - 1100) + " symbols");
 					}
 				}
 			}
 		});
 	}
 
-	public void fireView(Table table) {
+	public void fireView() {
 		viewDescription.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (table.isRowSelected()) {
-					removeComponent(label);
-					removeComponent(editPanel);
-					label = new DescriptionLable(table.getColumnValue(2), table
-							.getColumnValue(1));
-					add(label);
-					revalidate();
-					repaint();
+				try {
+					if (table.isRowSelected()) {
+						removeComponent(label);
+						removeComponent(editPanel);
+						label = new DescriptionLable(table.getColumnValue(2),
+								table.getColumnValue(1));
+						add(label);
+						revalidate();
+						repaint();
+					}
+				} catch (Exception e2) {
+					new MessageDialog("", "Please select row");
 				}
 			}
 		});
@@ -181,7 +187,7 @@ public class TablePanel extends JPanel {
 	private Trie getTableData(Table t) {
 		Trie tr = new Trie();
 		for (int i = 0; i < t.getRowCount(); i++) {
-			tr.add((String)t.getValueAt(i, 1), (String)t.getValueAt(i, 2));
+			tr.add((String) t.getValueAt(i, 1), (String) t.getValueAt(i, 2));
 		}
 		return tr;
 	}

@@ -19,16 +19,18 @@ import javax.swing.JPanel;
  */
 public class TablePanelHolder extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JPanel bottom;
+	public static JPanel bottom;
 	private JPanel jp;
-	private CardLayout cl;
+	public static CardLayout cl;
 	private JButton next;
 	private JButton prev;
 	private int counter = 1;
 	private int listSize;
 	private int pagesCount;
+	public static TablePanelHolder tph;
 
 	public TablePanelHolder(List<String> l) {
+		tph = this;
 		setLayout(null);
 		listSize = l.size();
 		bottom = new JPanel();
@@ -61,15 +63,10 @@ public class TablePanelHolder extends JPanel {
 			table.setBounds(0, 50, 527, 370);
 			TablePanel tablePanel = new TablePanel();
 			tablePanel.addTable(table, true);
-			// if (tablePanel.getTable().getRowCount() == 1) {
-			// remove(tablePanel);
-			// revalidate();
-			// repaint();
-			// }
 			bottom.add(tablePanel, i + 1 + "");
 			a += list.get(i).size();
 		}
-		if (listSize > 11) {
+		if (listSize > 10) {
 			prev.setBounds(5, 20, 70, 23);
 			next.setBounds(460, 20, 70, 23);
 			add(next);
@@ -118,7 +115,7 @@ public class TablePanelHolder extends JPanel {
 		List<List<String>> list = new ArrayList<>();
 		for (int i = 0, a = 0; i < l.size(); i++, a++) {
 			li.add(l.get(i));
-			if (a == 10) {
+			if (a == 9) {
 				list.add(li);
 				li = new ArrayList<String>();
 				a = -1;
@@ -128,14 +125,5 @@ public class TablePanelHolder extends JPanel {
 			list.add(li);
 		}
 		return list;
-	}
-
-	private String getCardName() {
-		for (Component comp : bottom.getComponents()) {
-			if (comp.isVisible()) {
-				return comp.getName();
-			}
-		}
-		return null;
 	}
 }

@@ -2,8 +2,9 @@ package project_trie.desktop;
 
 import java.awt.Dimension;
 import java.io.IOException;
+
 import javax.swing.JFrame;
-import javax.swing.UIManager;
+import javax.swing.JRootPane;
 
 public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -12,6 +13,10 @@ public class Frame extends JFrame {
 	private static final String TITLE = "Dictionary";
 
 	public Frame() throws ClassNotFoundException, IOException {
+		setDefaultLookAndFeelDecorated(true);
+		setUndecorated(true);
+	    getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+	 
 		// setDefaultLookAndFeelDecorated(true);
 		// try {
 		// UIManager.setLookAndFeel(UIManager

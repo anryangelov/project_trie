@@ -25,7 +25,7 @@ public class Table extends JTable {
 		return tableModel;
 	}
 
-	public Table(List<String> allWords,int size) {
+	public Table(List<String> allWords, int size) {
 		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -79,7 +79,7 @@ public class Table extends JTable {
 					FileManager.dataBase.get(allWords.get(i)), false });
 			setRowHeight(i, 40);
 		}
-		//setToolTipText((String) getValueAt(0, 1));
+		// setToolTipText((String) getValueAt(0, 1));
 
 		getColumnModel().getColumn(1).setPreferredWidth(200);
 		getColumnModel().getColumn(2).setPreferredWidth(250);
@@ -92,8 +92,8 @@ public class Table extends JTable {
 	}
 
 	public boolean isRowSelected() {
-		if (getSelectedRow() < 0) {
-			JOptionPane.showMessageDialog(null, "Select row");
+		if (getColumnValue(3) == (Object) false) {
+			new MessageDialog("", "Please select row");
 			return false;
 		}
 		return true;

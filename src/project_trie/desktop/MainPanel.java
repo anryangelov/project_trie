@@ -1,20 +1,13 @@
 package project_trie.desktop;
 
 import java.awt.CardLayout;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
@@ -27,7 +20,7 @@ public class MainPanel extends JPanel {
 	private Trie dictionary;
 	private DescriptionFormPanel descrPanel;
 	private MenuPanel menu;
-	private TablePanel tabPanel;
+	// private TablePanel tabPanel;
 	private JPanel wellcomePanel;
 
 	public MainPanel() {
@@ -39,7 +32,7 @@ public class MainPanel extends JPanel {
 		descrPanel = new DescriptionFormPanel();
 		menu = new MenuPanel(dictionary.list());
 		wellcomePanel = new WelcomePanel();
-		tabPanel = new TablePanel();
+		// tabPanel = new TablePanel();
 		setupPanel();
 	}
 
@@ -54,25 +47,23 @@ public class MainPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (menu.getSearchField().getText().length() > 0) {
 					String word = menu.getSearchField().getText();
-					tabPanel.removeComponent(tabPanel.getLabel());
-					tabPanel.removeComponent(tabPanel.getEditPanel());
+					// tabPanel.removeComponent(tabPanel.getLabel());
+					// tabPanel.removeComponent(tabPanel.getEditPanel());
 					revalidate();
 					if (!dictionary.has(word)) {
 						if (word.length() == 1) {
 							List<String> words = getWords(word);
 							if (!words.isEmpty()) {
-								bottom.add(new TablePanelHolder(getWords(word)),
+								bottom.add(
+										new TablePanelHolder(getWords(word)),
 										"tpt");
 								cl.show(bottom, "tpt");
 							} else {
 								new MessageDialog("", "      Invalid word");
 							}
 						} else {
-//							MessageDialog md = new MessageDialog();
-//							if (md.isMessageAnswerPositive("Would You Like to Save this word?")) {
-								descrPanel.getWord().setText(word);
-								cl.show(bottom, "descriptionForm");
-							//}
+							descrPanel.getWord().setText(word);
+							cl.show(bottom, "descriptionForm");
 						}
 					} else {
 						List<String> l = new ArrayList<>(1);
