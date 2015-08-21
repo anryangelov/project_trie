@@ -4,16 +4,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import project_trie.trie.FileManager;
+import project_trie.trie.Trie;
 
 public class TablePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -22,12 +20,12 @@ public class TablePanel extends JPanel {
 	private JButton edit;
 	private JButton remove;
 	private JButton viewDescription;
-	private JScrollPane scrollPane;
 	private DescriptionLable label;
 	private EditPanel editPanel;
-	private TablePanel tp = this;
+	private TablePanel tp;
 
 	public TablePanel() {
+		tp = this;
 		setLayout(null);
 		setBackground(Color.ORANGE);
 		setBounds(12, 70, 1300, 550);
@@ -47,11 +45,8 @@ public class TablePanel extends JPanel {
 		if (height > 500) {
 			height = 500;
 		}
-		scrollPane = new JScrollPane(this.table,
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(5, 10, 527, height + 22);
-		add(scrollPane);
+		table.setBounds(5, 10, 527, height + 22);
+		add(table);
 		edit.setBounds(430, height + 40, 100, 30);
 		add(edit);
 		viewDescription.setBounds(210, height + 40, 100, 30);
@@ -71,12 +66,20 @@ public class TablePanel extends JPanel {
 				removeComponent(editPanel);
 				revalidate();
 				repaint();
+
 				if (table.isRowSelected()) {
 					String key = table.getColumnValue(1);
-					table.removeRow();
+					//table.removeRow();
 					FileManager.dataBase.remove(key);
 					FileManager.saveChanges();
 					Autocomplete.updateAutocomplete(FileManager.dataBase.list());
+					removeComponent(tp);
+					
+					//List<String> l = getTableData(table).list();
+					TablePanel p = new TablePanel();
+					p.addTable(new Table(getTableData(table).list(), 1), false);
+					revalidate();
+					repaint();
 				}
 				if (table.getRowCount() == 0) {
 					MainPanel.cl.first(MainPanel.bottom);
@@ -175,7 +178,11 @@ public class TablePanel extends JPanel {
 		return table;
 	}
 
-	public JScrollPane getScrollPane() {
-		return scrollPane;
+	private Trie getTableData(Table t) {
+		Trie tr = new Trie();
+		for (int i = 0; i < t.getRowCount(); i++) {
+			tr.add((String)t.getValueAt(i, 1), (String)t.getValueAt(i, 2));
+		}
+		return tr;
 	}
 }

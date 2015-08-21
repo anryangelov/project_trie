@@ -21,6 +21,10 @@ public class Table extends JTable {
 	private static final long serialVersionUID = 1L;
 	private DefaultTableModel tableModel;
 
+	public DefaultTableModel getTableModel() {
+		return tableModel;
+	}
+
 	public Table(List<String> allWords,int size) {
 		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
