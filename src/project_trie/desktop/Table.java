@@ -26,6 +26,7 @@ public class Table extends JTable {
 	}
 
 	public Table(List<String> allWords, int size) {
+		setFocusable(true);
 		tableModel = new DefaultTableModel(0, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -106,5 +107,10 @@ public class Table extends JTable {
 
 	public <T> void setColumnValue(T value, int column) {
 		setValueAt(value, getSelectedRow(), column);
+	}
+	public void resetFirstColumn(){
+		for (int i = 0; i < getRowCount(); i++) {
+			setValueAt(i+1, i, 0);
+		}
 	}
 }

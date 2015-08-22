@@ -5,13 +5,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
-
 import project_trie.trie.FileManager;
 import project_trie.trie.Trie;
 
@@ -29,7 +26,7 @@ public class TablePanel extends JPanel {
 	public TablePanel() {
 		setLayout(null);
 		setBackground(Color.ORANGE);
-		setBounds(12, 70, 1300, 550);
+		//setBounds(12, 0, 1300, 550);
 		edit = new JButton("edit");
 		viewDescription = new JButton("view");
 		setBackground(Color.WHITE);
@@ -71,20 +68,13 @@ public class TablePanel extends JPanel {
 						.isMessageAnswerPositive("Are you sure you want to delete "
 								+ key)) {
 					table.removeRow();
-					if (table.getRowCount() != 0) {
-						FileManager.dataBase.remove(key);
-						FileManager.saveChanges();
-						Autocomplete.updateAutocomplete(FileManager.dataBase
-								.list());
-						removeAll();
-					//	MainPanel.bottom.r
-						List<String> tableData = getTableData(table).list();
-						addTable(new Table(tableData, 1), true);
-						revalidate();
-						repaint();
-					} else {
+					FileManager.dataBase.remove(key);
+					FileManager.saveChanges();
+					Autocomplete.updateAutocomplete(FileManager.dataBase.list());
+					table.resetFirstColumn();
+					if (table.getRowCount() == 0) {
+						TablePanelHolder.removePanel();
 						TablePanelHolder.cl.previous(TablePanelHolder.bottom);
-
 					}
 				}
 			}

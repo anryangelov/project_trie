@@ -27,10 +27,8 @@ public class TablePanelHolder extends JPanel {
 	private int counter = 1;
 	private int listSize;
 	private int pagesCount;
-	public static TablePanelHolder tph;
 
 	public TablePanelHolder(List<String> l) {
-		tph = this;
 		setLayout(null);
 		listSize = l.size();
 		bottom = new JPanel();
@@ -63,8 +61,11 @@ public class TablePanelHolder extends JPanel {
 			table.setBounds(0, 50, 527, 370);
 			TablePanel tablePanel = new TablePanel();
 			tablePanel.addTable(table, true);
-			bottom.add(tablePanel, i + 1 + "");
+			tablePanel.setName(i + 1 + "");
+			bottom.add(tablePanel, tablePanel.getName());
 			a += list.get(i).size();
+			tablePanel.add(prev);
+			tablePanel.add(next);
 		}
 		if (listSize > 10) {
 			prev.setBounds(5, 20, 70, 23);
@@ -125,5 +126,20 @@ public class TablePanelHolder extends JPanel {
 			list.add(li);
 		}
 		return list;
+	}
+
+	public static void removePanel() {
+		bottom.remove(bottom.getComponents()[bottom.getComponentCount()-1]);
+		if (bottom.getComponentCount() ==1) {
+
+
+		}
+//		JPanel p = null;
+//		for (Component comp : bottom.getComponents()) {
+//			if (comp.getName().equals(name)) {
+//				p = (JPanel) comp;
+//			}
+//		}
+//		bottom.remove(p);
 	}
 }

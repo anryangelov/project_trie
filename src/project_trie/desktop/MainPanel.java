@@ -20,7 +20,6 @@ public class MainPanel extends JPanel {
 	private Trie dictionary;
 	private DescriptionFormPanel descrPanel;
 	private MenuPanel menu;
-	// private TablePanel tabPanel;
 	private JPanel wellcomePanel;
 
 	public MainPanel() {
@@ -32,7 +31,6 @@ public class MainPanel extends JPanel {
 		descrPanel = new DescriptionFormPanel();
 		menu = new MenuPanel(dictionary.list());
 		wellcomePanel = new WelcomePanel();
-		// tabPanel = new TablePanel();
 		setupPanel();
 	}
 
@@ -47,9 +45,6 @@ public class MainPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (menu.getSearchField().getText().length() > 0) {
 					String word = menu.getSearchField().getText();
-					// tabPanel.removeComponent(tabPanel.getLabel());
-					// tabPanel.removeComponent(tabPanel.getEditPanel());
-					revalidate();
 					if (!dictionary.has(word)) {
 						if (word.length() == 1) {
 							List<String> words = getWords(word);
@@ -68,8 +63,10 @@ public class MainPanel extends JPanel {
 					} else {
 						List<String> l = new ArrayList<>(1);
 						l.add(word);
-						bottom.add(new TablePanelHolder(l), "tpt");
-						cl.show(bottom, "tpt");
+						TablePanel tab = new TablePanel();
+						tab.addTable(new Table(l,1), true);
+						bottom.add(tab, "tab");
+						cl.show(bottom, "tab");
 					}
 					menu.getSearchField().setText("");
 				} else {
