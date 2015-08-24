@@ -2,11 +2,11 @@ package project_trie.trie;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Trie implements Serializable {
+public class Trie implements Serializable, Iterable<String> {
 
 	public Node top;
-	private String stringResult;
 	int size;
 
 	public Trie() {
@@ -128,6 +128,10 @@ public class Trie implements Serializable {
 		ArrayList<String> words = new ArrayList<String>();
 		listRecursivly(node, words, root, false);
 		return words;
+	}
+
+	public Iterator<String> iterator() {
+		return list().iterator();
 	}
 
 	public int size() {

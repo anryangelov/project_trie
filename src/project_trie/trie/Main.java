@@ -33,6 +33,9 @@ public class Main {
 		data.update("abczz", "meaning of abcd is changed");
 		System.out.println(data);
 		System.out.println(data.list("kk"));
+		for (String s : data) {
+			System.out.println(s);
+		}
 	}
 
 }
