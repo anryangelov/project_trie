@@ -91,13 +91,14 @@ public class MainPanel extends JPanel {
 	}
 
 	private List<String> getWords(String letter) {
-		List<String> wordsList = new ArrayList<>();
+		/*List<String> wordsList = new ArrayList<>();
 		for (String words : FileManager.dataBase.list()) {
 			if (words.startsWith(letter)) {
 				wordsList.add(words);
 			}
 		}
-		return wordsList;
+		return wordsList;*/
+		return FileManager.dataBase.list(letter); // much faster
 	}
 
 	public JPanel getWellcomePanel() {
