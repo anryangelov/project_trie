@@ -49,6 +49,7 @@ public class Trie implements Serializable, Iterable<String> {
 	}
 
 	public String get(String key) {
+		key = key.toLowerCase();
 		Node node = getRrecursivly(key, top);
 		if (node != null)
 			return node.value;
@@ -75,8 +76,7 @@ public class Trie implements Serializable, Iterable<String> {
 	private Node getRrecursivly(String key, Node node) {
 		if (key.length() == 0) {
 			return node;
-		}
-		key = key.toLowerCase();
+		}	
 		int ascii_int = key.charAt(0) - 97;
 		key = key.substring(1, key.length());
 		if (node.path[ascii_int] != null) {
